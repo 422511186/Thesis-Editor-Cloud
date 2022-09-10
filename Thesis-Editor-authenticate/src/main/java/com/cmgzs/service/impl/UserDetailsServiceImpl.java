@@ -2,7 +2,7 @@ package com.cmgzs.service.impl;
 
 
 import com.cmgzs.domain.MyUserDetails;
-import com.cmgzs.domain.User;
+import com.cmgzs.domain.auth.User;
 import com.cmgzs.mapper.UserMapper;
 import com.cmgzs.service.PermissionsService;
 import org.springframework.security.core.GrantedAuthority;

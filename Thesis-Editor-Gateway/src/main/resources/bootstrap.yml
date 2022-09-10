@@ -1,0 +1,68 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: Thesis-Editor-Gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848 # 配置中心
+        file-extension: yaml # 这里指定的文件格式需要和nacos上新建的配置文件后缀相同，否则读不到
+      #        group: TEST_GROUP
+      #        namespace: 4ccc4c4c-51ec-4bd1-8280-9e70942c0d0c
+
+#    gateway:
+#      globalcors:
+#        cors-configurations:
+#          '[/**]': # 匹配所有请求
+#            allowedOrigins: "*" #跨域处理 允许所有的域
+#            allowedMethods: # 支持的方法
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#        #用户认证模块
+#        - id: authenticate  # 路由的id,没有规定规则但要求唯一,建议配合服务名
+#          # uri: http://localhost:8081
+#          uri: lb://Thesis-Editor-authenticate # lb://serviceName 是SpringCloud提供的负载均衡
+#          predicates:
+#            - Path=/authenticate/auth/** # 断言 路径相匹配的进行路由
+#            #- After=2017-01-20T17:42:47.789-07:00[America/Denver]
+#            #- Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+#            #- Cookie=username,zzyy
+#            #- Header=X-Request-Id, \d+ #请求头要有X-Request-Id属性，并且值为正数
+#            #- Host=**.atguigu.com
+#            #- Method=GET
+#            #- Query=username, \d+ # 要有参数名username并且值还要是正整数才能路由
+#          filters:
+#            - StripPrefix= 1 #去掉一个前缀
+#            - name: RequestRateLimiter #请求数限流 名字不能随便写
+#              args:
+#                redis-rate-limiter.replenishRate: 5 #令牌桶每秒填充平均速率
+#                redis-rate-limiter.burstCapacity: 10 #令牌桶总容量
+#                key-resolver: "#{@ipKeyResolver}"
+#        #测试模块
+#        - id: test  # 路由的id,没有规定规则但要求唯一,建议配合服务名
+#          uri: lb://Thesis-Editor-test # lb://serviceName 是SpringCloud提供的负载均衡
+#          predicates:
+#            - Path=/test/** # 断言 路径相匹配的进行路由
+#          filters:
+#            - StripPrefix= 1 #去掉一个前缀
+#            - name: RequestRateLimiter #请求数限流 名字不能随便写
+#              args:
+#                redis-rate-limiter.replenishRate: 5 #令牌桶每秒填充平均速率
+#                redis-rate-limiter.burstCapacity: 10 #令牌桶总容量
+#                key-resolver: "#{@ipKeyResolver}"
+#  redis:
+#    host: 121.37.108.12
+#    port: 6379
+#    password: jiangtao
+#    database: 2
+#    timeout: 10s

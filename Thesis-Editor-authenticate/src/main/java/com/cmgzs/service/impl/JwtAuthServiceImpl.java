@@ -2,13 +2,15 @@ package com.cmgzs.service.impl;
 
 
 import com.cmgzs.domain.MyUserDetails;
-import com.cmgzs.domain.User;
+import com.cmgzs.domain.auth.User;
+import com.cmgzs.exception.CustomException;
 import com.cmgzs.exception.UserNameExistedException;
 import com.cmgzs.mapper.UserMapper;
 import com.cmgzs.service.JwtAuthService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     private UserMapper userMapper;
     @Resource
     private TokenService tokenService;
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 登录
@@ -38,8 +42,12 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         //使用用户名密码进行登录验证
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = null;
-        //认证
-        authentication = authenticationManager.authenticate(upToken);
+        try {
+            //认证
+            authentication = authenticationManager.authenticate(upToken);
+        } catch (AuthenticationException e) {
+            throw new CustomException("账号或密码错误");
+        }
 
         // 生成token
         MyUserDetails loginUser = (MyUserDetails) authentication.getPrincipal();
@@ -72,10 +80,22 @@ public class JwtAuthServiceImpl implements JwtAuthService {
      */
     @Override
     public void updatePWD(User param) {
+        if (param.getPassWord().equals(param.getNewPassWord())){
+            throw new CustomException("新密码与旧密码相同");
+        }
+
+        User user = userMapper.getUserByUserName(param.getUserName());
+        if (!bCryptPasswordEncoder.matches(param.getPassWord(), user.getPassWord())) {
+            throw new CustomException("旧密码错误");
+        }
+
+        String newPassWord = bCryptPasswordEncoder.encode(param.getNewPassWord());
+        param.setNewPassWord(newPassWord);
 
         int i = userMapper.updateUser(param);
+
         if (i == 0)
-            throw new RuntimeException("修改失败");
+            throw new CustomException("修改密码失败");
     }
 
 

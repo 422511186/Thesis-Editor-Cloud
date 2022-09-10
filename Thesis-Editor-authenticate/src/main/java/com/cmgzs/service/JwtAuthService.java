@@ -1,7 +1,7 @@
 package com.cmgzs.service;
 
 
-import com.cmgzs.domain.User;
+import com.cmgzs.domain.auth.User;
 
 public interface JwtAuthService {
     /**

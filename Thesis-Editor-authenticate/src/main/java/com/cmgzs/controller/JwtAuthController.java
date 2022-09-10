@@ -2,7 +2,7 @@ package com.cmgzs.controller;
 
 
 import com.cmgzs.constant.Constants;
-import com.cmgzs.domain.User;
+import com.cmgzs.domain.auth.User;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.JwtAuthService;
 import com.cmgzs.utils.SecurityUtils;
@@ -58,17 +58,26 @@ public class JwtAuthController extends BaseController {
      * @return 结果
      */
     @PostMapping(value = "/updatePWD")
-    public ApiResult updatePWD(@Validated @RequestBody User param) {
-        String newPassWord = param.getParams().get("newPassWord").toString();
+    public ApiResult updatePWD(@RequestBody User param) {
+//        String newPassWord = param.getParams().get("newPassWord").toString();
+        String newPassWord = param.getNewPassWord();
         if (newPassWord != null) {
             newPassWord = newPassWord.trim();
-            if (newPassWord.length() < 16 && newPassWord.length() > 6)
-                jwtAuthServiceImpl.updatePWD(param);
+            if (newPassWord.length() > 16 || newPassWord.length() < 6) {
+                return error("新密码的格式不符合要求");
+            }
+            param.setNewPassWord(newPassWord);
+            jwtAuthServiceImpl.updatePWD(param);
             return success();
         }
-        return error();
+        return error("新密码的格式不符合要求");
     }
 
+    /**
+     * 获取当前账户权限列表
+     *
+     * @return
+     */
     @GetMapping("/getPermissions")
     public Object getPermissions() {
         List<GrantedAuthority> permissions = SecurityUtils.getUser().getPermissions();

@@ -2,7 +2,6 @@ package com.cmgzs.config.security;
 
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.filter.JwtAuthenticationTokenFilter;
-import com.cmgzs.handler.LogoutSuccessHandlerImpl;
 import com.cmgzs.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -75,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 处理跨域请求中的Preflight请求
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 //开放登录、注册接口
-                .antMatchers("/auth/login", "/auth/register").permitAll()
+                .antMatchers("/auth/login", "/auth/register", "/auth/updatePWD").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated() // 必须授权才能范围
@@ -96,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        http.logout().logoutUrl("/api/auth/logout").logoutSuccessHandler(logoutSuccessHandler);
+        http.logout().logoutUrl("/auth/logout").logoutSuccessHandler(logoutSuccessHandler);
         // 添加CORS filter
         http.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
         http.addFilterBefore(corsFilter, LogoutFilter.class);

@@ -45,18 +45,10 @@
             <artifactId>spring-boot-starter-aop</artifactId>
             <version>2.2.2.RELEASE</version>
         </dependency>
-
-
         <!--Redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <!--JWT-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
         <!--mysql-connector-java-->
         <dependency>
@@ -69,18 +61,11 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.2.11</version>
         </dependency>
-
         <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.78</version>
         </dependency>
 
         <!--Security-->
@@ -93,6 +78,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+
         <!--服务注册与发现-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

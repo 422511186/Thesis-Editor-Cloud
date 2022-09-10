@@ -1,10 +1,9 @@
 package com.cmgzs.mapper;
 
 
-import com.cmgzs.domain.User;
+import com.cmgzs.domain.auth.User;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 @Mapper
 public interface UserMapper {

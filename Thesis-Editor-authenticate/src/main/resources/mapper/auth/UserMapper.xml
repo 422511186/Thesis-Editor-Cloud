@@ -21,8 +21,7 @@
 
     <update id="updateUser">
         update user
-        set pass_word = #{params.newPassWord}
+        set pass_word = #{newPassWord}
         where user_name = #{userName}
-          and pass_word = #{passWord}
     </update>
 </mapper>
