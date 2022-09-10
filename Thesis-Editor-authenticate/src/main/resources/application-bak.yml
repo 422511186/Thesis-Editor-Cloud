@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+# 程序中生成文件存储地址配置
+Thesis-Editor:
+  workdir:
+    # 生成项目文件位置
+    path: D:\WorkSpace\项目\Thesis-Editor\workdir\
+    # 生成pdf存放位置
+#    pdf_out_path: D:\WorkSpace\java_workspace\Thesis-Editor\PDFS\
+token:
+  header: token
+  secret: CMGZS
+  expireTime: 30
+properties:
+  mysql:
+    host: rm-bp11d2ea61e279842oo.mysql.rds.aliyuncs.com
+    datebase: thesis_editor_test
+    username: huangzhenyu
+    password: hzy145235_
+  redis:
+    port: 6379
+    host: 121.37.108.12
+    database: 5
+    password: jiangtao
+    timeout: 10s
+  mongodb:
+    authentication-database: admin
+    host: 121.37.108.12
+    port: 27017
+    database: Thesis-Editor-test
+    usename: root
+    password: root
+  druid:
+    login-username: admin
+    login-password: 123456
