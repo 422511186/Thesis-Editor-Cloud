@@ -28,7 +28,7 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
         MultiValueMap<String, String> params = exchange.getRequest().getQueryParams();
 
         log.info("URI ==> {}, address ==> {}, 请求的参数为 ==> {}", request.getURI(), JSONObject.toJSON(request.getRemoteAddress()), JSONObject.toJSON(params));
-        
+
         String token = request.getHeaders().getFirst("token");
         if (!request.getURI().getPath().startsWith("/authenticate/auth/")) {
             if (token == null || "".equals(token)) {

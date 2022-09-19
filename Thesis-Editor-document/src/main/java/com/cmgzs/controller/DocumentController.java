@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 @RequestMapping("/document")
 public class DocumentController extends BaseController {
     @Resource
-    private DocumentService documentServiceImpl;
+    private DocumentService documentService;
 
     /**
      * 获取当前用户创建的的文档项目列表
@@ -20,7 +20,7 @@ public class DocumentController extends BaseController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResult getList() {
-        return ApiResult.success(documentServiceImpl.getDocuments());
+        return ApiResult.success(documentService.getDocuments());
     }
 
     /**
@@ -30,7 +30,7 @@ public class DocumentController extends BaseController {
      */
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
     public ApiResult getDocumentById(@PathVariable String uid) {
-        return ApiResult.success(documentServiceImpl.getDocumentById(uid));
+        return ApiResult.success(documentService.getDocumentById(uid));
     }
 
     /**
@@ -41,7 +41,7 @@ public class DocumentController extends BaseController {
      */
     @PostMapping
     public ApiResult create(@RequestBody Document document) throws InterruptedException {
-        return toResult(documentServiceImpl.createDocument(document));
+        return toResult(documentService.createDocument(document));
     }
 
 
@@ -53,7 +53,7 @@ public class DocumentController extends BaseController {
      */
     @DeleteMapping("/{uid}")
     public ApiResult delete(@PathVariable String uid) {
-        return toResult(documentServiceImpl.deleteDocument(uid));
+        return toResult(documentService.deleteDocument(uid));
     }
 
     /**
