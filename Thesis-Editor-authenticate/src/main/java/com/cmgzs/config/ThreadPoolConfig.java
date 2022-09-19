@@ -1,10 +1,12 @@
-package com.cmgzs.config.thread;
+package com.cmgzs.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
@@ -40,7 +42,7 @@ public class ThreadPoolConfig {
      * 线程池前缀名
      */
     @Value("${Thread.THREAD_NAME_PREFIX}")
-    private final String THREAD_NAME_PREFIX = "Task_Service_Async_";
+    private final String THREAD_NAME_PREFIX = "Task_Service_Async";
 
     /**
      * allowCoreThreadTimeOut为true则线程池数量最后销毁到0个

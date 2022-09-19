@@ -80,7 +80,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
      */
     @Override
     public void updatePWD(User param) {
-        if (param.getPassWord().equals(param.getNewPassWord())){
+        if (param.getPassWord().equals(param.getNewPassWord())) {
             throw new CustomException("新密码与旧密码相同");
         }
 

@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails createLoginUser(User user) {
         // 2. 设置角色
         List<GrantedAuthority> auths = permissionsServiceImpl.getPermissions(user.getId());
-        if (auths == null || auths.size() == 0){
+        if (auths == null || auths.size() == 0) {
             auths.add(DEFAULT_ROLE);
         }
         return new MyUserDetails(user, auths);

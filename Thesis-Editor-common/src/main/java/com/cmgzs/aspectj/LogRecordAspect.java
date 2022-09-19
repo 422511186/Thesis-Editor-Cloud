@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,7 +23,7 @@ import java.net.URLDecoder;
 @Aspect
 @Component//定义一个切面
 public class LogRecordAspect {
-    public final String execution = "execution(*  *..*.*.controller..*.*(..))";
+    public final String execution = "execution(*  *..*.controller..*.*(..))";
     private static final String UTF_8 = "utf-8";
 
     // 定义切点Pointcut

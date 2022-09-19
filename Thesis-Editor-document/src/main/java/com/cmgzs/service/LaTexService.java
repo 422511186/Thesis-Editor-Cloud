@@ -1,7 +1,7 @@
 package com.cmgzs.service;
 
 
-import com.cmgzs.domain.document.Document;
+import com.cmgzs.domain.Document;
 
 import java.io.File;
 

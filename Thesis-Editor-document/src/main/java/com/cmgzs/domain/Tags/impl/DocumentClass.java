@@ -1,6 +1,6 @@
-package com.cmgzs.domain.document.Tags.impl;
+package com.cmgzs.domain.Tags.impl;
 
-import com.cmgzs.domain.document.Tags.Tag;
+import com.cmgzs.domain.Tags.Tag;
 import lombok.Data;
 
 import java.util.ArrayList;

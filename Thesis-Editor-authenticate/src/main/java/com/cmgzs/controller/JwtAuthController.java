@@ -84,4 +84,7 @@ public class JwtAuthController extends BaseController {
         return ApiResult.success(permissions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }
 
+
+
+
 }

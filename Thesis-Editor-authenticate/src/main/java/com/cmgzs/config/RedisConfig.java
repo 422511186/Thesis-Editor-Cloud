@@ -1,5 +1,6 @@
-package com.cmgzs.config.redis;
+package com.cmgzs.config;
 
+import com.cmgzs.config.redis.FastJson2JsonRedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

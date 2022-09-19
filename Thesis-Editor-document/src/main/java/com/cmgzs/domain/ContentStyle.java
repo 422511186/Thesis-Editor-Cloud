@@ -1,4 +1,4 @@
-package com.cmgzs.domain.document;
+package com.cmgzs.domain;
 
 import lombok.Data;
 

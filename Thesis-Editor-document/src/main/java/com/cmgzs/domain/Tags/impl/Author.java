@@ -1,19 +1,22 @@
-package com.cmgzs.domain.document.Tags.impl;
+package com.cmgzs.domain.Tags.impl;
 
-import com.cmgzs.domain.document.Tags.Tag;
+
+
+import com.cmgzs.domain.Tags.Tag;
 import lombok.Data;
 
+
 /**
- * 题目   --  标签
+ * 正文开始 --  标签
  */
 @Data
-public class Title implements Tag {
-
+public class Author implements Tag {
     private static final long serialVersionUID = 1L;
-    private final String tagName = "\\title{content}   \n";
+
+    private final String tagName = "\\author{content}   \n";
     private String content;
 
-    public Title(String content) {
+    public Author(String content) {
         this.content = content;
     }
 

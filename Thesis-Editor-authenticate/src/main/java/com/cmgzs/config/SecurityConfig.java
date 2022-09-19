@@ -1,5 +1,6 @@
-package com.cmgzs.config.security;
+package com.cmgzs.config;
 
+import com.cmgzs.component.LogoutSuccessHandlerImpl;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.filter.JwtAuthenticationTokenFilter;
 import com.cmgzs.service.impl.UserDetailsServiceImpl;

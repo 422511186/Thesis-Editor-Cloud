@@ -1,6 +1,6 @@
-package com.cmgzs.domain.document;
+package com.cmgzs.domain;
 
-import com.cmgzs.domain.document.Tags.Tag;
+import com.cmgzs.domain.Tags.Tag;
 import lombok.Data;
 
 import java.io.Serializable;

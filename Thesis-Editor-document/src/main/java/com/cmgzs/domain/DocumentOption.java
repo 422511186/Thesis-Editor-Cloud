@@ -1,4 +1,4 @@
-package com.cmgzs.domain.document;
+package com.cmgzs.domain;
 
 import com.cmgzs.domain.base.BaseEntity;
 import lombok.Data;

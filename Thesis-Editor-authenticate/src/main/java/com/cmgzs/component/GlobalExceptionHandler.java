@@ -1,4 +1,4 @@
-package com.cmgzs.config.handler;
+package com.cmgzs.component;
 
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.exception.CustomException;

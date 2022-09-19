@@ -1,4 +1,4 @@
-package com.cmgzs.config.security;
+package com.cmgzs.component;
 
 import com.alibaba.fastjson.JSON;
 import com.cmgzs.domain.MyUserDetails;

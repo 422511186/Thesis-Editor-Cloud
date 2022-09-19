@@ -1,4 +1,4 @@
-package com.cmgzs.domain.document.Tags;
+package com.cmgzs.domain.Tags;
 
 import java.io.Serializable;
 

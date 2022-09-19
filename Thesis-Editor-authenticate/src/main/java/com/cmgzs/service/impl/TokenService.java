@@ -8,6 +8,7 @@ import com.cmgzs.utils.text.StringUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,24 +24,37 @@ import java.util.concurrent.TimeUnit;
  * @author hzy
  */
 @Component
+@Slf4j
 public class TokenService {
-    // 令牌自定义标识
+    /**
+     * 令牌自定义标识
+     */
     @Value("${token.header}")
     private String header;
 
-    // 令牌秘钥
+    /**
+     * 令牌秘钥
+     */
     @Value("${token.secret}")
     private String secret;
 
-    // 令牌有效期（默认30分钟）
+    /**
+     * 令牌有效期（默认30分钟）
+     */
     @Value("${token.expireTime}")
     private int expireTime;
 
-    /** 1秒 */
+    /**
+     * 1秒
+     */
     protected static final long MILLIS_SECOND = 1000;
-    /** 1分 */
+    /**
+     * 1分
+     */
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
-    /** 1时 */
+    /**
+     * 1时
+     */
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
     @Resource
@@ -110,6 +124,7 @@ public class TokenService {
         long expireTime = loginUser.getExpireTime();
         long currentTime = System.currentTimeMillis();
         if (expireTime - currentTime <= MILLIS_MINUTE_TEN) {
+            log.info("续签token...");
             refreshToken(loginUser);
         }
     }

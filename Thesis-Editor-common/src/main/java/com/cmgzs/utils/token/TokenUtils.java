@@ -1,6 +1,5 @@
 package com.cmgzs.utils.token;
 
-import cn.hutool.json.JSONObject;
 import com.cmgzs.constant.Constants;
 import com.cmgzs.utils.text.StringUtils;
 import io.jsonwebtoken.Claims;

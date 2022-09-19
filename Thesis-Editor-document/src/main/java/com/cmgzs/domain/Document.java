@@ -1,9 +1,11 @@
-package com.cmgzs.domain.document;
+package com.cmgzs.domain;
 
 
-import com.cmgzs.domain.document.Tags.impl.UsePackage;
+import com.cmgzs.domain.Tags.impl.UsePackage;
 import com.cmgzs.enums.DocumentTypes;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,18 +14,19 @@ import java.util.ArrayList;
  * 文档项目(mongodb存储结构)
  */
 @Data
+@org.springframework.data.mongodb.core.mapping.Document(value = "documents")
 public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 实例（项目）唯一标识
      */
-    /*主键*/
+    @Id         /*主键*/
     private String uid;
 
     /**
      * 所有者
      */
-    /*索引*/
+    @Indexed    /*索引*/
     private String auth;
 
     /**
