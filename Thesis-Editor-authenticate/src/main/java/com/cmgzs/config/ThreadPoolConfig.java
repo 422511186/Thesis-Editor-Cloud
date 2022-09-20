@@ -53,7 +53,7 @@ public class ThreadPoolConfig {
     @Value("${Thread.allowCoreThreadTimeOut}")
     private boolean allowCoreThreadTimeOut = false;
 
-    @Bean("taskExecutor")
+    @Bean("threadPoolTaskExecutor")
     public ThreadPoolTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(CORE_POOL_SIZE);

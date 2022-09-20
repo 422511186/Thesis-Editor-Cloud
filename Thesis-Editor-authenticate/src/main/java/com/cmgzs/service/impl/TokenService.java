@@ -197,4 +197,19 @@ public class TokenService {
     private String getTokenKey(String uuid) {
         return Constants.LOGIN_TOKEN_KEY + uuid;
     }
+
+    public int isLegal(String token) {
+        if (StringUtils.isNotEmpty(token)) {
+            Claims claims = parseToken(token);
+            // 解析对应的权限以及用户信息
+            String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
+            String userKey = getTokenKey(uuid);
+            MyUserDetails user = redisCache.getCacheObject(userKey);
+            if (user != null && user.getToken() != null){
+                verifyToken(user);
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

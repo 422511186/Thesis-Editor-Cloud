@@ -2,7 +2,6 @@ package com.cmgzs.config.handler;
 
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.exception.CustomException;
-import com.cmgzs.exception.UserNameExistedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

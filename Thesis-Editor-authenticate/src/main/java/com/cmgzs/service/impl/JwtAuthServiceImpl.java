@@ -98,5 +98,11 @@ public class JwtAuthServiceImpl implements JwtAuthService {
             throw new CustomException("修改密码失败");
     }
 
+    @Override
+    public int isLegal(String token) {
+        int legal = tokenService.isLegal(token);
+        return legal;
+    }
+
 
 }

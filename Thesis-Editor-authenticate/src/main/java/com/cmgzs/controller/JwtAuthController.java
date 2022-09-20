@@ -59,7 +59,6 @@ public class JwtAuthController extends BaseController {
      */
     @PostMapping(value = "/updatePWD")
     public ApiResult updatePWD(@RequestBody User param) {
-//        String newPassWord = param.getParams().get("newPassWord").toString();
         String newPassWord = param.getNewPassWord();
         if (newPassWord != null) {
             newPassWord = newPassWord.trim();
@@ -84,7 +83,14 @@ public class JwtAuthController extends BaseController {
         return ApiResult.success(permissions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }
 
-
-
-
+    /**
+     * 验证token是否合法
+     *
+     * @return
+     */
+    @PostMapping("/isLegal/{token}")
+    Object isLegal(@PathVariable("token") String token) {
+        int isLegal = jwtAuthServiceImpl.isLegal(token);
+        return isLegal == 1 ? success() : error();
+    }
 }

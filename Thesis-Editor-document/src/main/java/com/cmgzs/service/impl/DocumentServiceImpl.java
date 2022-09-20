@@ -1,14 +1,12 @@
 package com.cmgzs.service.impl;
 
 import com.cmgzs.constant.LatexFileNameConstant;
-import com.cmgzs.domain.Content;
 import com.cmgzs.domain.Document;
 import com.cmgzs.mapper.DocumentMapper;
 import com.cmgzs.service.DocumentService;
 import com.cmgzs.utils.AuthUtils;
 import com.cmgzs.utils.FileUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
-import com.cmgzs.utils.id.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;

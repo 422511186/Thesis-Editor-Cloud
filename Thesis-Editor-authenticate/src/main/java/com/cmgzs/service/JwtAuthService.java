@@ -29,4 +29,5 @@ public interface JwtAuthService {
      */
     void updatePWD(User param);
 
+    int isLegal(String token);
 }

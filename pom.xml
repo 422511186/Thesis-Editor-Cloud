@@ -10,10 +10,12 @@
 
     <modules>
         <module>Thesis-Editor-common</module>
-        <module>Thesis-Editor-authenticate</module>
+<!--        <module>Thesis-Editor-authenticate</module>-->
         <module>Thesis-Editor-Gateway</module>
         <module>Thesis-Editor-test</module>
         <module>Thesis-Editor-document</module>
+        <module>Thesis-Editor-User</module>
+        <module>Thesis-Editor-Authorize</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
