@@ -76,7 +76,6 @@ public class GatewayConfig {
                 exchange.getRequest().getQueryParams().getFirst("user")
         );
     }*/
-
     @Bean
     @ConditionalOnMissingBean
     public HttpMessageConverters messageConverters(ObjectProvider<HttpMessageConverter<?>> converters) {
