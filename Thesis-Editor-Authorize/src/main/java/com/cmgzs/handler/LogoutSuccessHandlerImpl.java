@@ -37,6 +37,6 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
         }
-        ServletUtils.renderString(response, JSON.toJSONString(ApiResult.error(HttpStatus.SUCCESS, "退出成功")));
+       ServletUtils.renderString(response, JSON.toJSONString(ApiResult.error(HttpStatus.SUCCESS, "退出成功")));
     }
 }

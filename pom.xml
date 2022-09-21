@@ -9,13 +9,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>Thesis-Editor-Authorize</module>
+        <module>Thesis-Editor-User</module>
+        <module>Thesis-Editor-Archive</module>
         <module>Thesis-Editor-Common</module>
         <module>Thesis-Editor-Gateway</module>
-        <module>Thesis-Editor-User</module>
-        <module>Thesis-Editor-Authorize</module>
         <module>Thesis-Editor-Support</module>
         <module>Thesis-Editor-Redis</module>
         <module>Thesis-Editor-Datasource</module>
+        <module>Thesis-Editor-OpenFein</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
@@ -128,6 +130,12 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.2.47</version>
                 <scope>compile</scope>
+            </dependency>
+            <!-- pagehelper 分页插件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
