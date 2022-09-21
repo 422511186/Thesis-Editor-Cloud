@@ -1,4 +1,4 @@
-package com.cmgzs.component;
+package com.cmgzs.handler;
 
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.exception.AuthException;

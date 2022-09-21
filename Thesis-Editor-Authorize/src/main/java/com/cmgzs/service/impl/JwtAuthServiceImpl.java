@@ -1,7 +1,6 @@
 package com.cmgzs.service.impl;
 
 
-import com.cmgzs.component.RedisCache;
 import com.cmgzs.constant.Constants;
 import com.cmgzs.domain.MyUserDetails;
 import com.cmgzs.domain.auth.User;
@@ -10,6 +9,7 @@ import com.cmgzs.exception.CustomException;
 import com.cmgzs.exception.UserNameExistedException;
 import com.cmgzs.mapper.UserMapper;
 import com.cmgzs.service.JwtAuthService;
+import com.cmgzs.service.RedisService;
 import com.cmgzs.utils.id.SnowFlakeUtil;
 import com.cmgzs.utils.id.UUID;
 import com.cmgzs.utils.ServletUtils;
@@ -39,7 +39,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Resource
-    private RedisCache redisCache;
+    private RedisService redisService;
 
     /**
      * 登录
@@ -67,7 +67,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         String access_token = tokenService.createToken(loginUser);
 
         String refreshToken = UUID.fastUUID().toString();
-        redisCache.setCacheObject(tokenService.getRefreshToken(refreshToken), loginUser, 2, TimeUnit.DAYS);
+        redisService.setCacheObject(tokenService.getRefreshToken(refreshToken), loginUser, 2, TimeUnit.DAYS);
 
         HashMap<String, Object> tokens = new HashMap<>();
         tokens.put("refreshToken", refreshToken);
@@ -118,14 +118,14 @@ public class JwtAuthServiceImpl implements JwtAuthService {
      */
     @Override
     public Object refreshToken(String refresh_token) {
-        MyUserDetails loginUser = redisCache.getCacheObject(tokenService.getRefreshToken(refresh_token));
+        MyUserDetails loginUser = redisService.getCacheObject(tokenService.getRefreshToken(refresh_token));
         if (loginUser == null)
             throw new AuthException("refresh_token 已经过期，请重新登录", Constants.refresh_token_expire);
         /**删除原来的 refresh_token */
-        redisCache.deleteObject(tokenService.getRefreshToken(refresh_token));
+        redisService.deleteObject(tokenService.getRefreshToken(refresh_token));
         /*重新获取新的refresh_token*/
         String refreshToken = UUID.fastUUID().toString();
-        redisCache.setCacheObject(tokenService.getRefreshToken(refreshToken), loginUser, 2, TimeUnit.HOURS);
+        redisService.setCacheObject(tokenService.getRefreshToken(refreshToken), loginUser, 2, TimeUnit.HOURS);
 
         String access_token = tokenService.createToken(loginUser);
 

@@ -1,4 +1,4 @@
-package com.cmgzs.component;
+package com.cmgzs.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.cmgzs.constant.HttpStatus;

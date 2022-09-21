@@ -1,9 +1,9 @@
 package com.cmgzs.service.impl;
 
-import com.cmgzs.component.RedisCache;
 import com.cmgzs.constant.Constants;
 import com.cmgzs.domain.MyUserDetails;
 import com.cmgzs.exception.CustomException;
+import com.cmgzs.service.RedisService;
 import com.cmgzs.utils.id.IdUtils;
 import com.cmgzs.utils.text.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -59,7 +59,7 @@ public class TokenService {
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
     @Resource
-    private RedisCache redisCache;
+    private RedisService redisService;
 
     /**
      * 获取用户身份信息
@@ -80,7 +80,7 @@ public class TokenService {
             // 解析对应的权限以及用户信息
             String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
             String userKey = getTokenKey(uuid);
-            MyUserDetails user = redisCache.getCacheObject(userKey);
+            MyUserDetails user = redisService.getCacheObject(userKey);
             return user;
         }
         return null;
@@ -102,7 +102,7 @@ public class TokenService {
     public void delLoginUser(String token) {
         if (StringUtils.isNotEmpty(token)) {
             String userKey = getTokenKey(token);
-            redisCache.deleteObject(userKey);
+            redisService.deleteObject(userKey);
         }
     }
 
@@ -148,7 +148,7 @@ public class TokenService {
 
         String userKey = getTokenKey(loginUser.getToken());
         // 根据uuid将User缓存
-        redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
+        redisService.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
 

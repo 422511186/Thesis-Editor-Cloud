@@ -19,7 +19,7 @@ public class MyUserDetails implements UserDetails {
     /**
      * 权限列表
      */
-    private List<GrantedAuthority> permissions;
+    private List<GrantedAuthority> Authorities;
     /**
      * 用户信息
      */
@@ -40,14 +40,14 @@ public class MyUserDetails implements UserDetails {
 
     }
 
-    public MyUserDetails(User user, List<GrantedAuthority> permissions) {
+    public MyUserDetails(User user, List<GrantedAuthority> Authorities) {
         this.user = user;
-        this.permissions = permissions;
+        this.Authorities = Authorities;
     }
 
-    public MyUserDetails(String token, List<GrantedAuthority> permissions, User user) {
+    public MyUserDetails(String token, List<GrantedAuthority> Authorities, User user) {
         this.token = token;
-        this.permissions = permissions;
+        this.Authorities = Authorities;
         this.user = user;
     }
 
@@ -59,12 +59,8 @@ public class MyUserDetails implements UserDetails {
         this.token = token;
     }
 
-    public List<GrantedAuthority> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<GrantedAuthority> permissions) {
-        this.permissions = permissions;
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.Authorities = authorities;
     }
 
     public User getUser() {
@@ -151,7 +147,7 @@ public class MyUserDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions;
+        return Authorities;
     }
 
 

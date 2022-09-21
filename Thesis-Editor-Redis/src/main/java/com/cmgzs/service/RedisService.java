@@ -1,24 +1,23 @@
-package com.cmgzs.component;
+package com.cmgzs.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * spring redis 工具类
  *
- * @author hzy
+ * @author ruoyi
  **/
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
 @Component
-public class RedisCache {
-    @Autowired
+public class RedisService {
+    @Resource
     public RedisTemplate redisTemplate;
 
     /**
