@@ -49,10 +49,10 @@
             <artifactId>Thesis-Editor-Support</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--OpenFein-->
+        <!--OpenFeign-->
         <dependency>
             <groupId>com.cmgzs</groupId>
-            <artifactId>Thesis-Editor-OpenFein</artifactId>
+            <artifactId>Thesis-Editor-OpenFeign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

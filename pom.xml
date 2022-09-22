@@ -17,7 +17,7 @@
         <module>Thesis-Editor-Support</module>
         <module>Thesis-Editor-Redis</module>
         <module>Thesis-Editor-Datasource</module>
-        <module>Thesis-Editor-OpenFein</module>
+        <module>Thesis-Editor-OpenFeign</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
