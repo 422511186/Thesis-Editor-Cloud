@@ -2,12 +2,9 @@ package com.cmgzs.controller;
 
 import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.UserContext;
-import com.cmgzs.fein.JwtAuthController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @author huangzhenyu
@@ -16,8 +13,6 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/archive")
 public class Test {
-    @Resource
-    private JwtAuthController jwtAuthController;
 
     @GetMapping("/Test1")
     @RequiredToken

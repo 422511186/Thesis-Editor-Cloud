@@ -6,7 +6,7 @@ import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.UserContext;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.exception.CustomException;
-import com.cmgzs.fein.JwtAuthController;
+import com.cmgzs.feign.JwtAuthController;
 import com.cmgzs.utils.SpringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

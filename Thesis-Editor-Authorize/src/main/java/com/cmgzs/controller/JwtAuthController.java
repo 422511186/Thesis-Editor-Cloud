@@ -27,7 +27,7 @@ public class JwtAuthController extends BaseController {
      * @return 结果
      */
     @PostMapping(value = "/login")
-    public ApiResult login(@Validated @RequestBody User param) {
+    public ApiResult login(@RequestBody User param) {
         ApiResult ajax = ApiResult.success();
         Object tokens = jwtAuthServiceImpl.login(param.getUserName(), param.getPassWord());
         ajax.put("tokens", tokens);
@@ -42,7 +42,7 @@ public class JwtAuthController extends BaseController {
      * @return
      */
     @PostMapping(value = "/register")
-    public ApiResult register(@Validated @RequestBody User param) {
+    public ApiResult register(@RequestBody User param) {
         jwtAuthServiceImpl.register(param);
         return success();
     }
