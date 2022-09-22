@@ -69,14 +69,16 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
 
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
         HttpMethod method = serverHttpRequest.getMethod();
+
 //        String encryptionType = serverHttpRequest.getHeaders().getFirst("encryptionType");
         String encryptionType = "RSA";
+
         URI uri = serverHttpRequest.getURI();
         MediaType mediaType = serverHttpRequest.getHeaders().getContentType();
         if (encryptionType != null) {
             if (method == HttpMethod.POST || method == HttpMethod.PUT) {
-                Map<String, Object> paramMap = new HashMap<>();
                 // 获取请求体,修改请求体
+                Map<String, Object> paramMap = new HashMap<>();
                 ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
 
                 Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap((String body) -> {
@@ -95,13 +97,8 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                 //创建BodyInserter修改请求体
                 BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
                 HttpHeaders headers = new HttpHeaders();
-
                 headers.putAll(exchange.getRequest().getHeaders());
-
-                int length = JSON.toJSONString(paramMap).getBytes().length;
                 headers.remove(HttpHeaders.CONTENT_LENGTH);
-                headers.setContentLength(length);
-
 
                 MyCachedBodyOutputMessage outputMessage = new MyCachedBodyOutputMessage(exchange, headers);
                 outputMessage.initial(paramMap, requestId, sign, dateTimestamp);
