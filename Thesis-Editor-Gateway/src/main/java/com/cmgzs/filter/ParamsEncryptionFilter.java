@@ -102,34 +102,33 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                 headers.remove(HttpHeaders.CONTENT_LENGTH);
                 headers.setContentLength(length);
 
-                serverHttpRequest = new ServerHttpRequestDecorator(serverHttpRequest) {
-                    @Override
-                    public HttpHeaders getHeaders() {
-                        return headers;
-                    }
-                };
 
-//                MyCachedBodyOutputMessage outputMessage = new MyCachedBodyOutputMessage(exchange, headers);
-//                outputMessage.initial(paramMap, requestId, sign, dateTimestamp);
-//                Mono<Void> voidMono = bodyInserter.insert(outputMessage, new BodyInserterContext())
-//                        .then(Mono.defer(() -> {
-//                            ServerHttpRequestDecorator decorator = new ServerHttpRequestDecorator(exchange.getRequest()) {
-//                                @Override
-//                                public Flux<DataBuffer> getBody() {
-//                                    Flux<DataBuffer> body = outputMessage.getBody();
-//                                    if (body.equals(Flux.empty())) {
-//                                        //验证签名
-//                                        checkSign(outputMessage.getSign(), outputMessage.getDateTimestamp(),
-//                                                outputMessage.getRequestId(), outputMessage.getParamMap());
-//                                    }
-//                                    return outputMessage.getBody();
-//                                }
-//                            };
-//                            return chain.filter(exchange.mutate().request(decorator).build());
-//                        }));
-//                return voidMono;
+                MyCachedBodyOutputMessage outputMessage = new MyCachedBodyOutputMessage(exchange, headers);
+                outputMessage.initial(paramMap, requestId, sign, dateTimestamp);
+                Mono<Void> voidMono = bodyInserter.insert(outputMessage, new BodyInserterContext())
+                        .then(Mono.defer(() -> {
+                            ServerHttpRequestDecorator decorator = new ServerHttpRequestDecorator(serverHttpRequest) {
+                                @Override
+                                public Flux<DataBuffer> getBody() {
+                                    Flux<DataBuffer> body = outputMessage.getBody();
+                                    if (body.equals(Flux.empty())) {
+                                        //验证签名
+                                        checkSign(outputMessage.getSign(), outputMessage.getDateTimestamp(),
+                                                outputMessage.getRequestId(), outputMessage.getParamMap());
+                                    }
+                                    return outputMessage.getBody();
+                                }
 
-                return chain.filter(exchange.mutate().request(serverHttpRequest).build());
+                                @Override
+                                public HttpHeaders getHeaders() {
+                                    return headers;
+                                }
+                            };
+                            return chain.filter(exchange.mutate().request(decorator).build());
+                        }));
+                return voidMono;
+
+//                return chain.filter(exchange.mutate().request(serverHttpRequest).build());
 
             } else if (method == HttpMethod.GET || method == HttpMethod.DELETE) {
                 try {
