@@ -6,6 +6,7 @@ import com.cmgzs.enums.DocumentTypes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * 文档项目(mongodb存储结构)
  */
 @Data
-@org.springframework.data.mongodb.core.mapping.Document(value = "documents")
+@Document(value = "Archives")
 public class Archive implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
@@ -48,15 +49,5 @@ public class Archive implements Serializable {
      * 使用的宏包集合
      */
     private ArrayList<UsePackage> packages;
-
-    /**
-     * 正文（标签 + 文字）
-     */
-    private ArrayList<Content> content;
-
-    /**
-     * 正文参数配置
-     */
-    private ArrayList<ContentStyle> contentStyles;
 
 }

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/archive")
 public class Test {
 
-    @GetMapping("/Test1")
     @RequiredToken
+    @GetMapping("/Test1")
     public Object Test1() {
         return UserContext.get();
     }

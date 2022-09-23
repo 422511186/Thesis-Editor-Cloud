@@ -1,14 +1,18 @@
 package com.cmgzs.controller;
 
+import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.domain.Archive;
 import com.cmgzs.service.ArchiveService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+
 @RestController
 @RequestMapping("/archive")
+@RequiredToken(value = true)
 public class ArchiveController extends BaseController {
-//    @Resource
+    @Resource
     private ArchiveService archiveService;
 
     /**

@@ -1,14 +1,19 @@
 package com.cmgzs.domain;
 
 import com.cmgzs.Tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * 正文
+ * 文档树存储(mongodb存储结构) --> 化为扁平结构，存储
  */
 @Data
+@AllArgsConstructor
+@Document(value = "Contents")
 public class Content implements Comparable<Content>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +32,12 @@ public class Content implements Comparable<Content>, Serializable {
      * 当前id
      */
     private int id;
+
+
+    /**
+     * 子节点
+     */
+    private List<Content> children;
 
     /**
      * 标签类型
