@@ -1,4 +1,4 @@
-package com.cmgzs.config;
+package com.cmgzs.interceptor;
 
 import com.cmgzs.utils.text.StringUtils;
 import feign.RequestInterceptor;
@@ -7,8 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * 请求时，带上请求头中的token
+ *
+ * @author huangzhenyu
+ * @date 2022/9/23
+ */
 @Slf4j
-public class HeaderIntercepter implements RequestInterceptor {
+public class HeaderInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
