@@ -29,14 +29,14 @@ import java.util.Map;
  *
  * @author hzy
  */
+@Slf4j
 @Configuration
 @EnableCaching
 @AutoConfigureBefore(RedisAutoConfiguration.class)
-@Slf4j
 public class RedisConfig extends CachingConfigurerSupport {
 
 
-    @Value("${redisson.host}")
+    @Value("${redis.host}")
     private String host;
 
     @Value("${redis.port}")

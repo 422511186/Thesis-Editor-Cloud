@@ -2,6 +2,7 @@ package com.cmgzs.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.util.Md5Utils;
+import com.cmgzs.constant.RequestConstants;
 import com.cmgzs.filter.ParamsEncryptionFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ public class AccessRequestCheck {
 
 
     public static String getSign(HttpHeaders headers) {
-        List<String> list = headers.get("sign");
+        List<String> list = headers.get(RequestConstants.SIGN);
         if (CollectionUtils.isEmpty(list)) {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
@@ -77,7 +78,7 @@ public class AccessRequestCheck {
     }
 
     public static Long getDateTimestamp(HttpHeaders httpHeaders) {
-        List<String> list = httpHeaders.get("timestamp");
+        List<String> list = httpHeaders.get(RequestConstants.TIMESTAMP);
         if (CollectionUtils.isEmpty(list)) {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
@@ -91,7 +92,7 @@ public class AccessRequestCheck {
     }
 
     public static String getRequestId(HttpHeaders headers) {
-        List<String> list = headers.get("requestId");
+        List<String> list = headers.get(RequestConstants.REQUESTID);
         if (CollectionUtils.isEmpty(list)) {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }

@@ -53,8 +53,10 @@ public class LogRecordAspect {
         String queryString = request.getQueryString();
         Object[] args = pjp.getArgs();
         String params = "";
+
         // result的值就是被拦截方法的返回值
         Object result = pjp.proceed();
+
         long endTime = System.currentTimeMillis();
         try {
             long startTime = (long) request.getAttribute("startTime");
@@ -69,6 +71,7 @@ public class LogRecordAspect {
                 if (params != null)
                     params = URLDecoder.decode(params, UTF_8);
             }
+
             log.info(" requestMethod:{}, url:{}, params:{}, responseBody:{}, elapsed:{}ms.", method, uri, params,
                     JSON.toJSONString(result, SerializerFeature.WriteMapNullValue), (endTime - startTime));
         } catch (Exception e) {
@@ -82,6 +85,7 @@ public class LogRecordAspect {
     //    执行切点之后
     @After("excudeService()")
     public void exAfter(JoinPoint joinPoint) {
+
     }
 
 }

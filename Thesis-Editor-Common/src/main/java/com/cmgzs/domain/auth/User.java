@@ -11,6 +11,7 @@ import lombok.Data;
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
     private String id;
     /**
      * 用户名
@@ -20,6 +21,7 @@ public class User extends BaseEntity {
      * 密码
      */
     private String passWord;
+
     private String NewPassWord;
     /**
      * 昵称

@@ -22,10 +22,14 @@ public class Constants {
      */
     public static final String LOGIN_TOKEN_KEY = "access_token:";
 
+    public static final int access_token_expire = -1;
+
     /**
      * refresh_token
      */
     public static final String REFRESH_TOKEN = "refresh_token:";
+
+    public static final int refresh_token_expire = -2;
 
 
     /**
@@ -37,10 +41,6 @@ public class Constants {
      * 令牌前缀 （Claims）
      */
     public static final String LOGIN_USER_KEY = "login_user_key";
-
-    public static final int access_token_expire = -1;
-
-    public static final int refresh_token_expire = -2;
 
 
 }

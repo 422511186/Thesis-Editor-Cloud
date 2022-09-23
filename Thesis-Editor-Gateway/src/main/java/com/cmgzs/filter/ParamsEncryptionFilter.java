@@ -2,6 +2,7 @@ package com.cmgzs.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.cmgzs.constant.RequestConstants;
 import com.cmgzs.domain.MyCachedBodyOutputMessage;
 import com.cmgzs.utils.AccessRequestCheck;
 import com.cmgzs.utils.RSAUtils;
@@ -54,6 +55,9 @@ import static com.cmgzs.utils.AccessRequestCheck.checkSign;
 @Component
 public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
 
+    /**
+     * RSA 密钥写死
+     */
     public static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANDiaN46OUQZfLwt19KiYKVX2CzW29kSrwtBVsvgBYuq8h+1fOG2kZPRJGttwJqPJoZVZwvxJ/9vZtqkmtLX6Gq5/neTKUbHOE5RIuZ9zfwKxh66Uod36Q03GEmfvJnS0NgoHTO+mrL7e+TRaJ4eEeeRpTPmE8Xhphbz3vi/WK6VAgMBAAECgYAU6JTWqb1Rs7tomq4fx2ElK8XXtyoKcHRVDBVEEwh7EoFp6yC09zFbOnQKzNGapvmUOLg32cvHJb+F4zQcJsB8v/rxUZG0fFFqe2ZtrHewQl7/XnaAlp+0NRtSoi//52pQMzQEIFpdIVLEhL8wfQhZwYxBvx0EdtWwBYVyOxUjgQJBAPdqSidKhjbClzbHYIKAEO4eJvNrslQJlbbbneMbWrf3MEXkX/YTicDnX0nEoPql6iHmv0ArdoptpsNxTD+YYycCQQDYId0C2sUDHgkFt5Q6yG03iK4ysSwK4spbapLbvyK3zD8VQeg3unWSn4hbyd9QqEp5f+NYiAOjn9HH8R4eDwXjAkALTJZgXv3sKEzhmo9kxlZ/mW7r9QIq5lkpBbSbN5eYCTjyKDDduxyya56lbs5vQ/6CV9hqJNIAFmvkRxtVWC9HAkEAotUIbKEjstCLHZqMe6kK178K9rgSpXTt3eeyEwqyfmTL1hkceffponi8w+KYc20HBvi58LYwf7Ll2swm06Cf3wJBAOTSJVnvCyEQtBx+9nXfv3L4o9R0W9pypPlfRRX9gquKfgBHf1czjN5N0dQskdinHYOoschJoQVafkLGx4LwPN4=";
 
 
@@ -71,7 +75,8 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
         HttpMethod method = serverHttpRequest.getMethod();
 
-//        String encryptionType = serverHttpRequest.getHeaders().getFirst("encryptionType");
+        // TODO: 2022/9/23 可以将加密方式做活 ，这里先写死
+//        String encryptionType = serverHttpRequest.getHeaders().getFirst(RequestConstants.ENCRYPTION_TYPE");
         String encryptionType = "RSA";
 
         URI uri = serverHttpRequest.getURI();
@@ -94,7 +99,6 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                     return Mono.just(encrypt);
                 });
 
-
                 //创建BodyInserter修改请求体
                 BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
                 HttpHeaders headers = new HttpHeaders();
@@ -103,7 +107,8 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
 
                 MyCachedBodyOutputMessage outputMessage = new MyCachedBodyOutputMessage(exchange, headers);
                 outputMessage.initial(paramMap, requestId, sign, dateTimestamp);
-                Mono<Void> voidMono = bodyInserter.insert(outputMessage, new BodyInserterContext())
+
+                return bodyInserter.insert(outputMessage, new BodyInserterContext())
                         .then(Mono.defer(() -> {
                             ServerHttpRequestDecorator decorator = new ServerHttpRequestDecorator(serverHttpRequest) {
                                 @Override
@@ -124,15 +129,16 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                             };
                             return chain.filter(exchange.mutate().request(decorator).build());
                         }));
-                return voidMono;
 
             } else if (method == HttpMethod.GET || method == HttpMethod.DELETE) {
                 try {
                     MultiValueMap<String, String> requestQueryParams = serverHttpRequest.getQueryParams();
-                    log.info("GET OR DELETE ciphertext  parameters： " + requestQueryParams.get("params").get(0));
-                    String params = requestQueryParams.get("params").get(0);
+                    log.info("GET OR DELETE ciphertext  parameters： " + requestQueryParams.get(RequestConstants.PARAMS).get(0));
+                    String params = requestQueryParams.get(RequestConstants.PARAMS).get(0);
+
                     //解密
                     params = decodeParamsBytype(encryptionType, params);
+
                     //非法非法加密处理，不进行解密操作
                     if ("-1".equals(params)) {
                         return chain.filter(exchange);

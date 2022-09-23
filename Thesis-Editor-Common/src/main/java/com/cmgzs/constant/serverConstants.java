@@ -6,10 +6,12 @@ package com.cmgzs.constant;
  */
 public class serverConstants {
 
-    public final static String THESIS_EDITOR_ARCHIVE = "Thesis-Editor-Archive";
+    public final static String thesis_editor_archive = "Thesis-Editor-Archive";
 
     public final static String thesis_editor_authorize = "Thesis-Editor-Authorize";
 
-    public final static String THESIS_EDITOR_USER = "Thesis-Editor-User";
+    public final static String thesis_editor_user = "Thesis-Editor-User";
+    
+    public final static String thesis_editor_gateway = "Thesis-Editor-Gateway";
 
 }
