@@ -15,6 +15,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,26 +33,27 @@ import java.util.Map;
 @Slf4j
 @Configuration
 @EnableCaching
-@AutoConfigureBefore(RedisAutoConfiguration.class)
+//@AutoConfigureBefore(RedisAutoConfiguration.class)
+@ComponentScan
 public class RedisConfig extends CachingConfigurerSupport {
 
 
-    @Value("${redis.host}")
+    @Value("${properties.redis.host}")
     private String host;
 
-    @Value("${redis.port}")
+    @Value("${properties.redis.port}")
     private String port;
 
-    @Value("${redis.password}")
+    @Value("${properties.redis.password}")
     private String password;
 
-    @Value("${redis.minimumIdleSize}")
+    @Value("${properties.redis.minimumIdleSize}")
     private int minimumIdleSize;
 
-    @Value("${redis.connectionPoolSize}")
+    @Value("${properties.redis.connectionPoolSize}")
     private int connectionPoolSize;
 
-    @Value("${redis.database}")
+    @Value("${properties.redis.database}")
     private int database;
 
 
