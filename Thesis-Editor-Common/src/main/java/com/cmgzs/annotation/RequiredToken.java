@@ -11,6 +11,20 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiredToken {
 
+    /**
+     * 是否需要解析token对应的用户信息
+     */
     boolean value() default true;
+
+    /**
+     * 用户需要拥有的角色
+     */
+    String role() default "";
+
+    /**
+     * 用户必须拥有的权限
+     */
+    String permissions() default "";
+
 
 }

@@ -60,13 +60,17 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         //设置用户信息
         ApiResult result = jwtAuthController.getUser();
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(result));
+
+        //响应失败处理
         if (resJson.getIntValue("code") != 200) {
             throw new CustomException(resJson.getString("message"));
         }
+
         JSONObject data = resJson.getJSONObject("data");
         UserContext.setUserName(data.getJSONObject("user").getString("userName"));
         UserContext.setUserId(data.getJSONObject("user").getString("id"));
         UserContext.setToken(httpServletRequest.getHeader("token"));
+
         return true;
     }
 

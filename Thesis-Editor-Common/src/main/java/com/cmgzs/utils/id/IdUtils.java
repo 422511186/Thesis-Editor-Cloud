@@ -3,7 +3,7 @@ package com.cmgzs.utils.id;
 /**
  * ID生成器工具类
  * 
- * @author ruoyi
+ * @author hzy
  */
 public class IdUtils
 {

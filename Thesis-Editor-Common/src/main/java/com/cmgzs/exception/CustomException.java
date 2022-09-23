@@ -3,7 +3,7 @@ package com.cmgzs.exception;
 /**
  * 自定义异常
  *
- * @author ruoyi
+ * @author hzy
  */
 public class CustomException extends RuntimeException {
     private static final long serialVersionUID = 1L;

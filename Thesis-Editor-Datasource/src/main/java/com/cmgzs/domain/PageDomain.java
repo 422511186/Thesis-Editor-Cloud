@@ -6,7 +6,7 @@ import com.cmgzs.utils.text.StringUtils;
 /**
  * 分页数据
  *
- * @author ruoyi
+ * @author hzy
  */
 public class PageDomain {
     /**

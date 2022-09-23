@@ -6,7 +6,7 @@ import com.cmgzs.utils.text.StringUtils;
 /**
  * sql操作工具类
  *
- * @author ruoyi
+ * @author hzy
  */
 public class SqlUtil {
     /**
