@@ -1,6 +1,7 @@
 package com.cmgzs.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -37,6 +38,22 @@ public class LogFilter implements GlobalFilter, Ordered {
 
         return chain.filter(exchange);
     }
+}
 
+class Log {
+    private String url;
+    private String headers;
+    private String address;
+    private String params;
+
+    public Log() {
+    }
+
+    public Log(String url, String headers, String address, String params) {
+        this.url = url;
+        this.headers = headers;
+        this.address = address;
+        this.params = params;
+    }
 
 }

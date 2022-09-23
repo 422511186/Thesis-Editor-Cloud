@@ -2,7 +2,7 @@ package com.cmgzs.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.util.Md5Utils;
-import com.cmgzs.filter.HijackedGatewayFilter;
+import com.cmgzs.filter.ParamsEncryptionFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +22,7 @@ import java.util.TreeMap;
  */
 @Slf4j
 public class AccessRequestCheck {
+
     private static final String ERROR_MESSAGE = "拒绝服务";
 
     public static void checkSign(String sign, Long dateTimestamp, String requestId, Map<String, Object> paramMap) {
@@ -42,7 +43,7 @@ public class AccessRequestCheck {
         String query = uri.getQuery();
         if (StringUtils.isNotBlank(query) && query.contains("params")) {
             String[] split = query.split("=");
-            String param = RSAUtils.decrypt(split[1], HijackedGatewayFilter.PRIVATE_KEY);
+            String param = RSAUtils.decrypt(split[1], ParamsEncryptionFilter.PRIVATE_KEY);
             Field targetQuery = uri.getClass().getDeclaredField("query");
             targetQuery.setAccessible(true);
             targetQuery.set(uri, param);
