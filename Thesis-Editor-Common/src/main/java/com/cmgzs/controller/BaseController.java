@@ -74,4 +74,11 @@ public class BaseController {
         return ApiResult.error(message);
     }
 
+    /**
+     * 待开发的消息提示
+     */
+    public ApiResult warn() {
+        return ApiResult.error("该接口正在赶工中");
+    }
+
 }

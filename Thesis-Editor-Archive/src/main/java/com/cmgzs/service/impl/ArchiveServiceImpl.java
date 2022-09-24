@@ -3,6 +3,7 @@ package com.cmgzs.service.impl;
 import com.cmgzs.constant.LatexFileNameConstant;
 import com.cmgzs.domain.Archive;
 import com.cmgzs.domain.UserContext;
+import com.cmgzs.exception.CustomException;
 import com.cmgzs.mapper.ArchiveMapper;
 import com.cmgzs.service.ArchiveService;
 import com.cmgzs.utils.FileUtils;
@@ -15,16 +16,15 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 @RefreshScope
-public class DocumentServiceImpl implements ArchiveService {
+public class ArchiveServiceImpl implements ArchiveService {
 
     @Resource
-    private ArchiveMapper documentMapper;
+    private ArchiveMapper archiveMapper;
 
 
     /**
@@ -42,19 +42,19 @@ public class DocumentServiceImpl implements ArchiveService {
     @Override
     public boolean createDocument(Archive document) throws InterruptedException {
 
-        String authName = UserContext.getUserName();
+        String authId = UserContext.getUserId();
 
         /*工作目录地址拼接*/
-        String workDir = workdir_prefix + "/" + authName;
+        String workDir = workdir_prefix + "/" + authId;
 
-        String uid = SnowFlakeUtil.getSnowFlakeId().toString();
-        document.setUid(uid);
-        document.setAuth(authName);
+        String archiveId = SnowFlakeUtil.getSnowFlakeId().toString();
+        document.setArchiveId(archiveId);
+        document.setAuth(authId);
 
-        documentMapper.insert(document);
+        archiveMapper.insert(document);
 
         /*在物理磁盘上创建项目结构*/
-        File file = new File(workDir, uid + LatexFileNameConstant.FILE_SUFFIX);
+        File file = new File(workDir, archiveId + LatexFileNameConstant.FILE_SUFFIX);
 
         /*最大尝试次数*/
         int maxCount = 3;
@@ -70,36 +70,36 @@ public class DocumentServiceImpl implements ArchiveService {
             Thread.sleep(500);
         }
         /*物理项目结构创建失败手动回滚*/
-        documentMapper.deleteById(uid);
+        archiveMapper.deleteById(archiveId);
         return false;
     }
 
     /**
      * 删除项目
      *
-     * @param uid 项目id
+     * @param archiveId 文档id
      * @return 结果
      */
     @Override
-    public boolean deleteDocument(String uid) {
+    public boolean deleteDocument(String archiveId) {
 
-        String authName = UserContext.getUserName();
+        String authId = UserContext.getUserId();
 
         /*工作目录地址拼接*/
-        String workDir = workdir_prefix + "/" + authName;
+        String workDir = workdir_prefix + "/" + authId;
 
-        Archive document = documentMapper.findById(uid).orElse(null);
+        Archive archive = archiveMapper.findById(archiveId).orElse(null);
 
-        if (document == null)
+        if (archive == null)
             throw new RuntimeException("该项目不存在");
 
-        String auth = document.getAuth();
+        String auth = archive.getAuth();
 
-        if (!authName.equals(auth))
+        if (!authId.equals(auth))
             throw new RuntimeException("无权限对此项目进行删除操作");
 
-        documentMapper.deleteById(uid);
-        File file = new File(workDir, uid + LatexFileNameConstant.FILE_SUFFIX);
+        archiveMapper.deleteById(archiveId);
+        File file = new File(workDir, archiveId + LatexFileNameConstant.FILE_SUFFIX);
 
         if (file.exists()) {
             FileUtils.deleteFile(file);
@@ -108,8 +108,39 @@ public class DocumentServiceImpl implements ArchiveService {
         return true;
     }
 
+
     /**
-     * 通过项目id获取项目详细信息
+     * 获取全部的文档(当前用户)
+     *
+     * @return 结果
+     */
+    @Override
+    public List<Archive> getDocuments() {
+
+        String authId = UserContext.getUserId();
+
+        Archive archive = new Archive();
+        archive.setAuth(authId);
+
+        Example<Archive> example = Example.of(archive);
+
+        return archiveMapper.findAll(example);
+    }
+
+    /**
+     * 修改文档信息
+     *
+     * @param archive 参数
+     * @return 结果
+     */
+    @Override
+    public int updateDocumentById(Archive archive) {
+        archiveMapper.save(archive);
+        return 1;
+    }
+
+    /**
+     * 获取id对应文档的详细信息
      *
      * @param Id 文档项目id
      * @return 结果
@@ -117,51 +148,22 @@ public class DocumentServiceImpl implements ArchiveService {
     @Override
     public Archive getDocumentById(String Id) {
 
-        String userName = UserContext.getUserName();
+        String authId = UserContext.getUserId();
 
-        Archive document = new Archive();
-        document.setAuth(userName);
-        document.setUid(Id);
+        Archive archive = new Archive();
+        archive.setArchiveId(Id);
+        Example<Archive> example = Example.of(archive);
 
-        Example<Archive> example = Example.of(document);
-        return documentMapper.findOne(example).orElse(null);
+        Archive findOne = archiveMapper.findOne(example).orElse(null);
+
+        if (findOne == null) {
+            throw new CustomException("该文档不存在");
+        }
+
+        if (!findOne.getAuth().equals(authId)) {
+            throw new CustomException("无权限");
+        }
+
+        return findOne;
     }
-
-    /**
-     * 获取全部的项目名称(当前用户)
-     *
-     * @return 结果
-     */
-    @Override
-    public List<Archive> getDocuments() {
-
-        String userName = UserContext.getUserName();
-
-        Archive document = new Archive();
-        document.setAuth(userName);
-
-        Example<Archive> example = Example.of(document);
-        List<Archive> all = documentMapper.findAll(example);
-
-        List<Archive> result = new ArrayList<>();
-        all.forEach(e -> {
-            Archive d = new Archive();
-            d.setUid(e.getUid());
-            d.setName(e.getName());
-            result.add(d);
-        });
-        return result;
-    }
-
-    /**
-     * 修改文档对象
-     *
-     * @param documents 参数
-     * @return 结果
-     */
-    @Override
-    public int updateDocumentById(List<Archive> documents) {
-        return documentMapper.saveAll(documents).size();
-    }
-
 }

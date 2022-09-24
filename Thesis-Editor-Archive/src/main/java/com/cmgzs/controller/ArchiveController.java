@@ -61,11 +61,12 @@ public class ArchiveController extends BaseController {
     /**
      * 修改文档项目
      *
-     * @param archive 项目名称和项目类型
+     * @param archive 文档类
      * @return 结果
      */
     @PutMapping
-    public ApiResult update(@RequestBody Archive archive) throws InterruptedException {
-        return toResult(null);
+    public ApiResult update(@RequestBody Archive archive) {
+        archiveService.updateDocumentById(archive);
+        return success();
     }
 }

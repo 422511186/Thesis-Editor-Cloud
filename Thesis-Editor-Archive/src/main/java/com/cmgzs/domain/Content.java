@@ -19,6 +19,11 @@ public class Content implements Comparable<Content>, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 所属文档的主键
+     */
+    private String archiveId;
+
+    /**
      * 唯一标识（绑定格式）
      */
     private String uid;

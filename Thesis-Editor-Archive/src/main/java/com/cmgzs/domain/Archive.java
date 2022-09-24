@@ -22,7 +22,7 @@ public class Archive implements Serializable {
      * 实例（项目）唯一标识
      */
     @Id         /*主键*/
-    private String uid;
+    private String archiveId;
 
     /**
      * 所有者
@@ -39,15 +39,5 @@ public class Archive implements Serializable {
      * 文档类型
      */
     private DocumentTypes type;
-
-    /**
-     * 文档排版配置参数
-     */
-    private ArchiveOption options;
-
-    /**
-     * 使用的宏包集合
-     */
-    private ArrayList<UsePackage> packages;
 
 }

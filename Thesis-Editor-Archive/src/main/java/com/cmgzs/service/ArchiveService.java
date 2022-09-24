@@ -7,29 +7,29 @@ import java.util.List;
 public interface ArchiveService {
 
     /**
-     * 创建项目
-     * @param archive 项目名称
+     * 创建文档
+     * @param archive 文档名称
      * @return 结果
      */
     boolean createDocument(Archive archive) throws InterruptedException;
 
     /**
-     * 删除项目
-     * @param uid 项目id
+     * 删除文档
+     * @param uid 文档id
      * @return 结果
      */
     boolean deleteDocument(String uid);
 
     /**
-     * 通过项目id获取项目详细信息
+     * 获取id对应文档的详细信息
      *
-     * @param Id 文档项目id
+     * @param Id 文档文档id
      * @return 结果
      */
     Archive getDocumentById(String Id);
 
     /**
-     * 获取全部的项目名称(当前用户)
+     * 获取全部的文档(当前用户)
      *
      * @return 结果
      */
@@ -39,9 +39,9 @@ public interface ArchiveService {
     /**
      * 修改文档对象
      *
-     * @param archives 参数
+     * @param archive 参数
      * @return 结果
      */
-    int updateDocumentById(List<Archive> archives);
+    int updateDocumentById(Archive archive);
 
 }
