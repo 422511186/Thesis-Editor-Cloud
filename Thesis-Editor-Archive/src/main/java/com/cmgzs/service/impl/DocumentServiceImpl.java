@@ -9,6 +9,7 @@ import com.cmgzs.utils.FileUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RefreshScope
 public class DocumentServiceImpl implements ArchiveService {
 
     @Resource

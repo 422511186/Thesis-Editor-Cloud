@@ -9,6 +9,8 @@ import com.cmgzs.utils.RSAUtils;
 import io.netty.buffer.ByteBufAllocator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.support.BodyInserterContext;
@@ -53,6 +55,7 @@ import static com.cmgzs.utils.AccessRequestCheck.checkSign;
  */
 @Slf4j
 @Component
+@RefreshScope
 public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
 
     /**
@@ -60,10 +63,16 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
      */
     public static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANDiaN46OUQZfLwt19KiYKVX2CzW29kSrwtBVsvgBYuq8h+1fOG2kZPRJGttwJqPJoZVZwvxJ/9vZtqkmtLX6Gq5/neTKUbHOE5RIuZ9zfwKxh66Uod36Q03GEmfvJnS0NgoHTO+mrL7e+TRaJ4eEeeRpTPmE8Xhphbz3vi/WK6VAgMBAAECgYAU6JTWqb1Rs7tomq4fx2ElK8XXtyoKcHRVDBVEEwh7EoFp6yC09zFbOnQKzNGapvmUOLg32cvHJb+F4zQcJsB8v/rxUZG0fFFqe2ZtrHewQl7/XnaAlp+0NRtSoi//52pQMzQEIFpdIVLEhL8wfQhZwYxBvx0EdtWwBYVyOxUjgQJBAPdqSidKhjbClzbHYIKAEO4eJvNrslQJlbbbneMbWrf3MEXkX/YTicDnX0nEoPql6iHmv0ArdoptpsNxTD+YYycCQQDYId0C2sUDHgkFt5Q6yG03iK4ysSwK4spbapLbvyK3zD8VQeg3unWSn4hbyd9QqEp5f+NYiAOjn9HH8R4eDwXjAkALTJZgXv3sKEzhmo9kxlZ/mW7r9QIq5lkpBbSbN5eYCTjyKDDduxyya56lbs5vQ/6CV9hqJNIAFmvkRxtVWC9HAkEAotUIbKEjstCLHZqMe6kK178K9rgSpXTt3eeyEwqyfmTL1hkceffponi8w+KYc20HBvi58LYwf7Ll2swm06Cf3wJBAOTSJVnvCyEQtBx+9nXfv3L4o9R0W9pypPlfRRX9gquKfgBHf1czjN5N0dQskdinHYOoschJoQVafkLGx4LwPN4=";
 
+    @Value(value = "${gateway.ParamsEncryptionFilter.openSign:#{false}}")
+    private boolean openSign;
 
-    @SneakyThrows
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        System.out.println("openSign = " + openSign);
+        if (!openSign){
+            return chain.filter(exchange);
+        }
 
         // 获取时间戳
         Long dateTimestamp = AccessRequestCheck.getDateTimestamp(exchange.getRequest().getHeaders());
@@ -85,7 +94,8 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
             if (method == HttpMethod.POST || method == HttpMethod.PUT) {
                 // 获取请求体,修改请求体
                 Map<String, Object> paramMap = new HashMap<>();
-                ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
+                ServerRequest serverRequest
+                        = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
 
                 Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap((String body) -> {
                     String encrypt = RSAUtils.decrypt(body, PRIVATE_KEY);
@@ -133,7 +143,6 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
             } else if (method == HttpMethod.GET || method == HttpMethod.DELETE) {
                 try {
                     MultiValueMap<String, String> requestQueryParams = serverHttpRequest.getQueryParams();
-                    log.info("GET OR DELETE ciphertext  parameters： " + requestQueryParams.get(RequestConstants.PARAMS).get(0));
                     String params = requestQueryParams.get(RequestConstants.PARAMS).get(0);
 
                     //解密
@@ -143,7 +152,6 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                     if ("-1".equals(params)) {
                         return chain.filter(exchange);
                     }
-                    log.info("GET OR DELETE plaintext parameters： " + params);
 
                     //校验参数是否被篡改
                     Map<String, Object> paramMap = AccessRequestCheck.getParamMap(params);
@@ -154,7 +162,6 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
                             uri.getPath(), params, uri.getFragment());
                     //封装request，传给下一级
                     ServerHttpRequest request = serverHttpRequest.mutate().uri(plaintUrl).build();
-                    log.info("get OR delete plaintext request.getQueryParams()： " + request.getQueryParams());
                     return chain.filter(exchange.mutate().request(request).build());
                 } catch (Exception e) {
                     e.printStackTrace();

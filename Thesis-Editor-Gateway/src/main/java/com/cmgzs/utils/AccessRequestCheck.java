@@ -1,21 +1,25 @@
 package com.cmgzs.utils;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.util.Md5Utils;
 import com.cmgzs.constant.RequestConstants;
 import com.cmgzs.filter.ParamsEncryptionFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author huangzhenyu
@@ -23,6 +27,8 @@ import java.util.TreeMap;
  */
 @Slf4j
 public class AccessRequestCheck {
+    @Resource
+    private RedisTemplate redisTemplate;
 
     private static final String ERROR_MESSAGE = "拒绝服务";
 
@@ -80,14 +86,15 @@ public class AccessRequestCheck {
     public static Long getDateTimestamp(HttpHeaders httpHeaders) {
         List<String> list = httpHeaders.get(RequestConstants.TIMESTAMP);
         if (CollectionUtils.isEmpty(list)) {
+            log.info("非法请求");
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
         long timestamp = Long.parseLong(list.get(0));
         long currentTimeMillis = System.currentTimeMillis();
-        //有效时长为5分钟
-//        if (currentTimeMillis - timestamp > 1000 * 60 * 5) {
-//            throw new IllegalArgumentException(ERROR_MESSAGE);
-//        }
+        //有效时长为3分钟
+        if (currentTimeMillis - timestamp > 1000 * 60 * 3) {
+            throw new IllegalArgumentException(ERROR_MESSAGE);
+        }
         return timestamp;
     }
 
