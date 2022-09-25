@@ -30,10 +30,20 @@ public class ContentController extends BaseController {
      * @return 结果
      */
     @RequestMapping(value = "/open", method = RequestMethod.GET)
-    ApiResult openArchive(@RequestParam String archiveId) {
+    public ApiResult openArchive(@RequestParam String archiveId) {
         return warn();
     }
 
+    /**
+     * 保持打开状态（需要续签）
+     *
+     * @param archiveId 打开的文档id
+     * @return 结果
+     */
+    @RequestMapping(value = "/keepOpen", method = RequestMethod.GET)
+    public ApiResult keepOpen(@RequestParam String archiveId) {
+        return warn();
+    }
 
     /**
      * 修改和删除的统一入口
@@ -42,7 +52,7 @@ public class ContentController extends BaseController {
      * @return 结果
      */
     @RequestMapping(value = "/updateContents", method = RequestMethod.PUT)
-    ApiResult updateContents(@RequestBody List<Content> contents) {
+    public ApiResult updateContents(@RequestBody List<Content> contents) {
 
         return warn();
     }
@@ -55,7 +65,7 @@ public class ContentController extends BaseController {
      * @return 结果
      */
     @RequestMapping(value = "/save", method = RequestMethod.PUT)
-    ApiResult saveContents(@RequestBody List<Content> contents) {
+    public ApiResult saveContents(@RequestBody List<Content> contents) {
         return warn();
     }
 
@@ -64,7 +74,7 @@ public class ContentController extends BaseController {
      * @return 结果
      */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    ApiResult deleteContents(@RequestBody List<String> contentIds) {
+    public ApiResult deleteContents(@RequestBody List<String> contentIds) {
         return warn();
     }
 }

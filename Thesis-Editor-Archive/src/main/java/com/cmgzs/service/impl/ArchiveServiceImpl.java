@@ -3,19 +3,26 @@ package com.cmgzs.service.impl;
 import com.cmgzs.constant.LatexFileNameConstant;
 import com.cmgzs.domain.Archive;
 import com.cmgzs.domain.UserContext;
+import com.cmgzs.domain.base.PageResult;
 import com.cmgzs.exception.CustomException;
 import com.cmgzs.mapper.ArchiveMapper;
 import com.cmgzs.service.ArchiveService;
 import com.cmgzs.utils.FileUtils;
+import com.cmgzs.utils.ServletUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +33,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     @Resource
     private ArchiveMapper archiveMapper;
 
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     /**
      * 项目工作文件位置
@@ -36,11 +45,11 @@ public class ArchiveServiceImpl implements ArchiveService {
     /**
      * 创建项目
      *
-     * @param document 文档pojo
+     * @param archive 文档pojo
      * @return 结果
      */
     @Override
-    public boolean createDocument(Archive document) throws InterruptedException {
+    public boolean createDocument(Archive archive) throws InterruptedException {
 
         String authId = UserContext.getUserId();
 
@@ -48,10 +57,11 @@ public class ArchiveServiceImpl implements ArchiveService {
         String workDir = workdir_prefix + "/" + authId;
 
         String archiveId = SnowFlakeUtil.getSnowFlakeId().toString();
-        document.setArchiveId(archiveId);
-        document.setAuth(authId);
+        archive.setArchiveId(archiveId);
+        archive.setAuth(authId);
+        archive.setCreateDateTime(new Date());
 
-        archiveMapper.insert(document);
+        archiveMapper.insert(archive);
 
         /*在物理磁盘上创建项目结构*/
         File file = new File(workDir, archiveId + LatexFileNameConstant.FILE_SUFFIX);
@@ -110,21 +120,38 @@ public class ArchiveServiceImpl implements ArchiveService {
 
 
     /**
-     * 获取全部的文档(当前用户)
+     * 获取全部的文档(当前用户) (分页)
      *
      * @return 结果
      */
     @Override
-    public List<Archive> getDocuments() {
+    public Object getDocuments() {
 
         String authId = UserContext.getUserId();
 
-        Archive archive = new Archive();
-        archive.setAuth(authId);
+        Integer pageNum = ServletUtils.getParameterToInt("pageNum");
+        Integer pageSize = ServletUtils.getParameterToInt("pageSize");
 
-        Example<Archive> example = Example.of(archive);
+        Criteria criteria = Criteria.where("auth").is(authId);
 
-        return archiveMapper.findAll(example);
+        Query query = new Query(criteria);
+
+        long total = mongoTemplate.count(query, Archive.class);
+
+        //分页
+        if (pageNum != null && pageSize != null) {
+            if (pageNum < 1) {
+                pageNum = 1;
+            }
+            query.with(Sort.by("createDateTime").descending())
+                    .limit(pageSize)
+                    .skip((long) (pageNum - 1) * pageSize);
+        }
+
+
+        List<Archive> archives = mongoTemplate.find(query, Archive.class);
+
+        return new PageResult<Archive>(pageNum, pageSize, total, archives);
     }
 
     /**

@@ -25,7 +25,7 @@ public class TreeUtil {
      */
     private static HashMap<Integer, Content> list2Map(List<Content> list) {
         HashMap<Integer, Content> mapTable = new HashMap<>();
-        mapTable.put(0, new Content("顶层", 0, 0, new ArrayList<>(), null, null));
+        mapTable.put(0, new Content("000", "顶层", 0, 0, new ArrayList<>(), null, null));
         for (Content content : list) {
             if (content.getChildren() == null) {
                 content.setChildren(new ArrayList<>());
@@ -36,7 +36,7 @@ public class TreeUtil {
     }
 
     /**
-     * 扁扁平树 ==> 嵌套树
+     * 扁平树 ==> 嵌套树
      *
      * @param list 扁平结构
      * @return 嵌套树形结构
@@ -55,7 +55,7 @@ public class TreeUtil {
     }
 
     /**
-     * 嵌套树 ==> 平树
+     * 嵌套树 ==> 扁平树
      *
      * @param content Tree结构
      * @param result  结果
@@ -74,9 +74,9 @@ public class TreeUtil {
     /**
      * 测试
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         ArrayList<Content> contents = new ArrayList<Content>() {{
-            add(new Content("1", 0, 1, null, null, null));
+            add(new Content("1""1", 0, 1, null, null, null));
             add(new Content("2", 1, 2, null, null, null));
             add(new Content("3", 2, 3, null, null, null));
             add(new Content("4", 3, 4, null, null, null));
@@ -90,6 +90,6 @@ public class TreeUtil {
         ArrayList<Content> result = new ArrayList<>();
         tree2List(content, result);
         result.forEach(System.out::println);
-    }
+    }*/
 
 }

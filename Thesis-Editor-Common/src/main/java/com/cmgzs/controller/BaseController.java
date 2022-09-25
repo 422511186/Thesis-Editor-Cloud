@@ -78,7 +78,7 @@ public class BaseController {
      * 待开发的消息提示
      */
     public ApiResult warn() {
-        return ApiResult.error("该接口正在赶工中");
+        return ApiResult.error("该接口正在开发中");
     }
 
 }

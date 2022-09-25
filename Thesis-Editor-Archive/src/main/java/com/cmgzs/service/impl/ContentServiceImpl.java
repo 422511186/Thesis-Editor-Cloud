@@ -1,12 +1,20 @@
 package com.cmgzs.service.impl;
 
 import com.cmgzs.domain.Content;
+import com.cmgzs.domain.UserContext;
 import com.cmgzs.mapper.ContentMapper;
 import com.cmgzs.service.ContentService;
+import com.cmgzs.service.RedisService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static com.cmgzs.constant.RedisConstant.archive_lock;
 
 /**
  * @author huangzhenyu
@@ -14,9 +22,13 @@ import java.util.List;
  */
 @Service
 public class ContentServiceImpl implements ContentService {
+
     @Resource
     private ContentMapper contentMapper;
-
+    @Resource
+    private MongoTemplate mongoTemplate;
+    @Resource
+    private RedisService redisService;
 
     /**
      * 打开文档
@@ -26,7 +38,31 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public List<Content> openArchive(String archiveId) {
-        return null;
+        Content content = new Content();
+        content.setArchiveId(archiveId);
+        return contentMapper.findAll(Example.of(content));
+    }
+
+    /**
+     * 保持打开状态（需要续签）
+     *
+     * @param archiveId 打开的文档id
+     * @return 结果
+     */
+    @Override
+    public int keepOpen(String archiveId) {
+
+        String userId = UserContext.getUserId();
+
+        String cacheUserId = redisService.getCacheObject(archive_lock + archiveId);
+
+        /*非当前用户占用文档*/
+        if (cacheUserId != null && !cacheUserId.equals(userId)) {
+            return 0;
+        }
+        //续签
+        redisService.setCacheObject(archive_lock + archiveId, userId, 5, TimeUnit.MINUTES);
+        return 1;
     }
 
     /**
@@ -37,6 +73,7 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int updateContents(List<Content> contents) {
+
         return 0;
     }
 
@@ -49,7 +86,8 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int saveContents(List<Content> contents) {
-        return 0;
+        contentMapper.saveAll(contents);
+        return 1;
     }
 
     /**
@@ -58,6 +96,7 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public int deleteContents(List<String> contentIds) {
-        return 0;
+        contentIds.forEach(contentMapper::deleteById);
+        return 1;
     }
 }

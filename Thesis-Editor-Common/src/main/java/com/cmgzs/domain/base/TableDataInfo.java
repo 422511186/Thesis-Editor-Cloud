@@ -1,4 +1,4 @@
-package com.cmgzs.domain;
+package com.cmgzs.domain.base;
 
 import java.io.Serializable;
 import java.util.List;

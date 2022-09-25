@@ -19,6 +19,14 @@ public interface ContentService {
     List<Content> openArchive(String archiveId);
 
     /**
+     * 保持打开状态（需要续签）
+     *
+     * @param archiveId 打开的文档id
+     * @return
+     */
+    int keepOpen(String archiveId);
+
+    /**
      * 修改和删除的统一入口
      *
      * @param contents 待操作的content

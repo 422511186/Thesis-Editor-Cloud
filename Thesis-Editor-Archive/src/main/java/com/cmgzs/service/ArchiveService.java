@@ -2,8 +2,6 @@ package com.cmgzs.service;
 
 import com.cmgzs.domain.Archive;
 
-import java.util.List;
-
 public interface ArchiveService {
 
     /**
@@ -29,11 +27,11 @@ public interface ArchiveService {
     Archive getDocumentById(String Id);
 
     /**
-     * 获取全部的文档(当前用户)
+     * 获取文档列表(当前用户)
      *
      * @return 结果
      */
-    List<Archive> getDocuments();
+    Object getDocuments();
 
 
     /**
