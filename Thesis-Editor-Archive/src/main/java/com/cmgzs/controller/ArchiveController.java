@@ -30,9 +30,9 @@ public class ArchiveController extends BaseController {
      *
      * @return 结果
      */
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    public ApiResult getDocumentById(@PathVariable String uid) {
-        return ApiResult.success(archiveService.getDocumentById(uid));
+    @RequestMapping(value = "/{archiveId}", method = RequestMethod.GET)
+    public ApiResult getDocumentById(@PathVariable String archiveId) {
+        return ApiResult.success(archiveService.getDocumentById(archiveId));
     }
 
     /**
