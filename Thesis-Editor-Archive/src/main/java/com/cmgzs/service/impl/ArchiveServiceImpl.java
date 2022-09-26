@@ -77,7 +77,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                 return true;
             }
             /*失败后等待500ms后重试*/
-            Thread.sleep(500);
+            Thread.sleep(300);
         }
         /*物理项目结构创建失败手动回滚*/
         archiveMapper.deleteById(archiveId);

@@ -2,6 +2,7 @@ package com.cmgzs.service.impl;
 
 import com.cmgzs.domain.Content;
 import com.cmgzs.domain.UserContext;
+import com.cmgzs.exception.CustomException;
 import com.cmgzs.mapper.ContentMapper;
 import com.cmgzs.service.ContentService;
 import com.cmgzs.service.RedisService;
@@ -25,8 +26,10 @@ public class ContentServiceImpl implements ContentService {
 
     @Resource
     private ContentMapper contentMapper;
+
     @Resource
     private MongoTemplate mongoTemplate;
+
     @Resource
     private RedisService redisService;
 
@@ -38,6 +41,12 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public List<Content> openArchive(String archiveId) {
+
+        int open = keepOpen(archiveId);
+        if (open == 0) {
+            throw new CustomException("该文档已被占用");
+        }
+
         Content content = new Content();
         content.setArchiveId(archiveId);
         return contentMapper.findAll(Example.of(content));
