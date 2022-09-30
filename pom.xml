@@ -10,14 +10,9 @@
 
     <modules>
         <module>Thesis-Editor-Authorize</module>
-        <module>Thesis-Editor-User</module>
-        <module>Thesis-Editor-Archive</module>
-        <module>Thesis-Editor-Common</module>
         <module>Thesis-Editor-Gateway</module>
-        <module>Thesis-Editor-Support</module>
-        <module>Thesis-Editor-Redis</module>
-        <module>Thesis-Editor-Datasource</module>
-        <module>Thesis-Editor-OpenFeign</module>
+        <module>Services</module>
+        <module>Common</module>
     </modules>
     <packaging>pom</packaging>
     <!--统一管理jar包版本-->
