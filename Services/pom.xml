@@ -14,6 +14,7 @@
     <modules>
         <module>Thesis-Editor-Archive</module>
         <module>Thesis-Editor-User</module>
+        <module>Thesis-Editor-File</module>
     </modules>
     <packaging>pom</packaging>
 </project>

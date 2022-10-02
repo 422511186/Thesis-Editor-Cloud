@@ -9,7 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Thesis-Editor-User</artifactId>
+    <artifactId>Thesis-Editor-File</artifactId>
+    <description>
+        文件统一上传服务
+    </description>
 
     <dependencies>
         <!-- spring-boot-starter-web -->
@@ -39,6 +42,18 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--通用模块-->
+        <dependency>
+            <groupId>com.cmgzs</groupId>
+            <artifactId>Thesis-Editor-Common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.cmgzs</groupId>
+            <artifactId>Thesis-Editor-Datasource</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
