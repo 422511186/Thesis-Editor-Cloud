@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+
+#server:
+#  port: 9090
+#spring:
+#  mail:
+#    default-encoding: utf-8
+#    host: smtp.qq.com
+#    username: 1249983602@qq.com
+#    password: wnlerxhvruxyffde
+#
+#  redis:
+#    host: 121.37.108.12
+#    port: 6379
+#    password: jiangtao
+#    database: 2
+#    timeout: 10s
+#
+#properties:
+#  redis:
+#    port: 6379
+#    host: 121.37.108.12
+#    database: 5
+#    password: jiangtao
+#    timeout: 10s
+#    minimumIdleSize: 5
+#    connectionPoolSize: 5

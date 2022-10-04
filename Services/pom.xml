@@ -15,6 +15,7 @@
         <module>Thesis-Editor-Archive</module>
         <module>Thesis-Editor-User</module>
         <module>Thesis-Editor-File</module>
+        <module>Thesis-Editor-CVV</module>
     </modules>
     <packaging>pom</packaging>
 </project>
