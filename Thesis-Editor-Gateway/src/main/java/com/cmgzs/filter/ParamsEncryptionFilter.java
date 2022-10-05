@@ -69,7 +69,7 @@ public class ParamsEncryptionFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("openSign = " + openSign);
+        log.info("openSign:{} ", openSign);
         if (!openSign){
             return chain.filter(exchange);
         }

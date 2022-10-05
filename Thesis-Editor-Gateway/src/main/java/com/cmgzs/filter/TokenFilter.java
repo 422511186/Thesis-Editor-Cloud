@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * @date 2022/9/9
  */
 @Slf4j
-@Component
+//@Component
 public class TokenFilter implements GlobalFilter, Ordered {
 
     @Override
@@ -31,7 +31,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取请求参数
         ServerHttpRequest request = exchange.getRequest();
-
         String token = request.getHeaders().getFirst("token");
         if (!request.getURI().getPath().startsWith("/authenticate/auth/")) {
             if (token == null || "".equals(token)) {

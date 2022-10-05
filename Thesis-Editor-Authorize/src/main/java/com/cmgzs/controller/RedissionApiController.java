@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/auth/redis")
-public class RedisionApiController {
+public class RedissionApiController {
 
     @Autowired
     private RedissonService redissonService;
