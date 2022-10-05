@@ -6,7 +6,6 @@ import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.JwtAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +17,7 @@ import javax.annotation.Resource;
 public class JwtAuthController extends BaseController {
 
     @Resource
-    private JwtAuthService jwtAuthServiceImpl;
+    private JwtAuthService jwtAuthService;
 
     /**
      * 登录获取token凭证
@@ -29,7 +28,7 @@ public class JwtAuthController extends BaseController {
     @PostMapping(value = "/login")
     public ApiResult login(@RequestBody User param) {
         ApiResult ajax = ApiResult.success();
-        Object tokens = jwtAuthServiceImpl.login(param.getUserName(), param.getPassWord());
+        Object tokens = jwtAuthService.login(param.getUserName(), param.getPassWord());
         ajax.put("tokens", tokens);
         return ajax;
     }
@@ -43,7 +42,7 @@ public class JwtAuthController extends BaseController {
      */
     @PostMapping(value = "/register")
     public ApiResult register(@RequestBody User param) {
-        jwtAuthServiceImpl.register(param);
+        jwtAuthService.register(param);
         return success();
     }
 
@@ -54,7 +53,7 @@ public class JwtAuthController extends BaseController {
      */
     @GetMapping(value = "/getUser")
     public ApiResult getUser() {
-        UserDetails user = jwtAuthServiceImpl.getUser();
+        UserDetails user = jwtAuthService.getUser();
         return ApiResult.success(user);
     }
 
@@ -65,7 +64,7 @@ public class JwtAuthController extends BaseController {
      */
     @GetMapping(value = "/refreshToken")
     public ApiResult refreshToken(@RequestParam("refresh_token") String refresh_token) {
-        Object access_token = jwtAuthServiceImpl.refreshToken(refresh_token);
+        Object access_token = jwtAuthService.refreshToken(refresh_token);
         return ApiResult.success(access_token);
     }
 }
