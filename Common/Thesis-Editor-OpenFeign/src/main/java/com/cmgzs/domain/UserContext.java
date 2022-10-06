@@ -1,6 +1,8 @@
 package com.cmgzs.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,16 @@ public class UserContext {
      * 用户名
      */
     public static final String CONTEXT_KEY_USER_NAME = "userName";
+
+    /**
+     * 角色
+     */
+    public static final String CONTEXT_KEY_ROLES_NAME = "roles";
+
+    /**
+     * 权限
+     */
+    public static final String CONTEXT_KEY_PERMISSIONS_NAME = "permissions";
 
 
     static {
@@ -86,13 +98,26 @@ public class UserContext {
         set(CONTEXT_KEY_USER_ID, userId);
     }
 
-    public static String getUserId() {
-        Object value = get(CONTEXT_KEY_USER_ID);
-        return String.valueOf(value);
-    }
 
     public static void setUserName(String userName) {
         set(CONTEXT_KEY_USER_NAME, userName);
+    }
+
+    public static void setToken(String token) {
+        set(CONTEXT_KEY_USER_TOKEN, token);
+    }
+
+    public static void setRoles(List<String> roles) {
+        set(CONTEXT_KEY_ROLES_NAME, roles);
+    }
+
+    public static void setPermissions(List<String> permissions) {
+        set(CONTEXT_KEY_PERMISSIONS_NAME, permissions);
+    }
+
+    public static String getUserId() {
+        Object value = get(CONTEXT_KEY_USER_ID);
+        return String.valueOf(value);
     }
 
     public static String getUserName() {
@@ -100,13 +125,37 @@ public class UserContext {
         return String.valueOf(value);
     }
 
-    public static void setToken(String token) {
-        set(CONTEXT_KEY_USER_TOKEN, token);
-    }
-
     public static String getToken() {
         Object value = get(CONTEXT_KEY_USER_TOKEN);
         return String.valueOf(value);
     }
 
+    public static List<String> getRoles() {
+        Object value = get(CONTEXT_KEY_ROLES_NAME);
+        return castList(value, String.class);
+    }
+
+    public static List<String> getPermissions() {
+        Object value = get(CONTEXT_KEY_PERMISSIONS_NAME);
+        return castList(value, String.class);
+    }
+
+    /**
+     * object对象转换List类型
+     *
+     * @param obj
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> castList(Object obj, Class<T> clazz) {
+        List<T> result = new ArrayList<T>();
+        if (obj instanceof List<?>) {
+            for (Object o : (List<?>) obj) {
+                result.add(clazz.cast(o));
+            }
+            return result;
+        }
+        return null;
+    }
 }

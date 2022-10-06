@@ -1,7 +1,6 @@
 package com.cmgzs.controller;
 
 
-import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.auth.User;
 import com.cmgzs.domain.auth.params.LoginParams;
 import com.cmgzs.domain.base.ApiResult;
@@ -16,7 +15,6 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
-@RequiredToken(value = false)
 public class JwtAuthController extends BaseController {
 
     @Resource

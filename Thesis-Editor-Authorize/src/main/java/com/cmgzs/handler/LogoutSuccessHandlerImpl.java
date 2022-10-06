@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Configuration
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
-    @Autowired
+
+    @Resource
     private TokenService tokenService;
 
     /**

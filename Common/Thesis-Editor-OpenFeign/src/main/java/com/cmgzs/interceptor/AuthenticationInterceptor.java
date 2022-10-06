@@ -43,20 +43,29 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 // 若设置的required = false 则跳过验证
                 return true;
             }
-
-        } else if (handlerMethod.getBeanType().isAnnotationPresent(RequiredToken.class)) {
-            // 若方法上没有注解则判断该方法的类上是否有RequiredToken注解
+            /** 如果required = true, 开始验证token，注入token对应的User信息 */
+            checkedToken(httpServletRequest);
+        } else if (handlerMethod.getBeanType().isAnnotationPresent(RequiredToken.class)) {// 若方法上没有注解则判断该方法的类上是否有RequiredToken注解
             // 若类上有，则判断设置的是否false
             RequiredToken requiredToken = handlerMethod.getBeanType().getAnnotation(RequiredToken.class);
+            // 若设置的required = false 则跳过验证
             if (!requiredToken.value()) {
-                // 若设置的required = false 则跳过验证
                 return true;
             }
-
+            checkedToken(httpServletRequest);
         }
+
+        return true;
+    }
+
+    /**
+     * 通过openfeign调用认证服务 验证解析token
+     *
+     * @param httpServletRequest
+     */
+    public void checkedToken(HttpServletRequest httpServletRequest) {
         /*注入依赖*/
         addJwtAuthController();
-
         //设置用户信息
         ApiResult result = jwtAuthFeign.getUser();
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(result));
@@ -65,13 +74,16 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         if (resJson.getIntValue("code") != 200) {
             throw new CustomException(resJson.getString("message"));
         }
-
         JSONObject data = resJson.getJSONObject("data");
         UserContext.setUserName(data.getJSONObject("user").getString("userName"));
         UserContext.setUserId(data.getJSONObject("user").getString("id"));
+        UserContext.setRoles(data.getJSONObject("user").getJSONArray("roles").toJavaList(String.class));
+        UserContext.setPermissions(data.getJSONObject("user").getJSONArray("permissions").toJavaList(String.class));
         UserContext.setToken(httpServletRequest.getHeader("token"));
+    }
 
-        return true;
+    private void checkRolesOrPermissions(){
+
     }
 
     /**
@@ -92,4 +104,5 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         UserContext.remove();
         super.afterCompletion(request, response, handler, ex);
     }
+
 }
