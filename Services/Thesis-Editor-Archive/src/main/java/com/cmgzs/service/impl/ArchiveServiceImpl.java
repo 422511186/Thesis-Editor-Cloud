@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -132,26 +133,33 @@ public class ArchiveServiceImpl implements ArchiveService {
         Integer pageNum = ServletUtils.getParameterToInt("pageNum");
         Integer pageSize = ServletUtils.getParameterToInt("pageSize");
 
-        Criteria criteria = Criteria.where("auth").is(authId);
+        Query query = new Query(Criteria.where("auth").is(authId));
 
-        Query query = new Query(criteria);
 
         long total = mongoTemplate.count(query, Archive.class);
+        /**
+         * 判断符合条件的行数
+         */
+        if (total < 1) {
+            return new PageResult<Archive>(pageNum, pageSize, total, new ArrayList<>());
+        }
 
-        //分页
+        //分页查询
         if (pageNum != null && pageSize != null) {
             if (pageNum < 1) {
                 pageNum = 1;
             }
+            if (pageSize < 1) {
+                pageSize = 10;
+            }
+            long skip = (long) (pageNum - 1) * pageSize;
             query.with(Sort.by("createDateTime").descending())
-                    .limit(pageSize)
-                    .skip((long) (pageNum - 1) * pageSize);
+                    .skip(skip)
+                    .limit(pageSize);
         }
 
-
         List<Archive> archives = mongoTemplate.find(query, Archive.class);
-
-        return new PageResult<Archive>(pageNum, pageSize, total, archives);
+        return new PageResult<>(pageNum, pageSize, total, archives);
     }
 
     /**

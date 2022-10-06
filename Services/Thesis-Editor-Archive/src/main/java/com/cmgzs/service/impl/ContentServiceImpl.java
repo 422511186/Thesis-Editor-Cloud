@@ -8,8 +8,8 @@ import com.cmgzs.service.ContentService;
 import com.cmgzs.service.RedisService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -65,7 +65,7 @@ public class ContentServiceImpl implements ContentService {
 
         String cacheUserId = redisService.getCacheObject(archive_lock + archiveId);
 
-        /*非当前用户占用文档*/
+        /**非当前用户占用文档*/
         if (cacheUserId != null && !cacheUserId.equals(userId)) {
             return 0;
         }
@@ -81,6 +81,7 @@ public class ContentServiceImpl implements ContentService {
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateContents(List<Content> contents) {
 
         return 0;
@@ -94,6 +95,7 @@ public class ContentServiceImpl implements ContentService {
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int saveContents(List<Content> contents) {
         contentMapper.saveAll(contents);
         return 1;
@@ -104,6 +106,7 @@ public class ContentServiceImpl implements ContentService {
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteContents(List<String> contentIds) {
         contentIds.forEach(contentMapper::deleteById);
         return 1;

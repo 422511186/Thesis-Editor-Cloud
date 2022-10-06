@@ -7,6 +7,7 @@ import java.util.List;
  * mongoDb分页对象
  */
 public class PageResult<T> {
+
     //当前业
     private Integer pageNum;
     //每页的数量
