@@ -2,7 +2,7 @@ package com.cmgzs.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.cmgzs.domain.base.ApiResult;
-import com.cmgzs.vo.VerifyCodeVo;
+import com.cmgzs.domain.cvv.params.VerifyCodeParams;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -32,10 +32,10 @@ class EmailControllerTest {
 
     @Test
     void verifyCode() {
-        VerifyCodeVo verifyCodeVo = new VerifyCodeVo();
-        verifyCodeVo.setUuid("111");
-        verifyCodeVo.setCode("22122");
-        ApiResult apiResult = emailController.verifyCode(verifyCodeVo);
+        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+        verifyCodeParams.setUuid("111");
+        verifyCodeParams.setCode("22122");
+        ApiResult apiResult = emailController.verifyCode(verifyCodeParams);
         log.info("apiResult:{}", JSON.toJSONString(apiResult));
     }
 }

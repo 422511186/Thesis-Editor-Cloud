@@ -6,7 +6,7 @@ import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.UserContext;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.exception.CustomException;
-import com.cmgzs.feign.JwtAuthController;
+import com.cmgzs.feign.JwtAuthFeign;
 import com.cmgzs.utils.SpringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 @Component
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
-    private volatile JwtAuthController jwtAuthController;
+    private volatile JwtAuthFeign jwtAuthFeign;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) {
@@ -58,7 +58,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         addJwtAuthController();
 
         //设置用户信息
-        ApiResult result = jwtAuthController.getUser();
+        ApiResult result = jwtAuthFeign.getUser();
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(result));
 
         //响应失败处理
@@ -78,10 +78,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
      * 同步注入依赖
      */
     public void addJwtAuthController() {
-        if (jwtAuthController == null) {
+        if (jwtAuthFeign == null) {
             synchronized (AuthenticationInterceptor.class) {
-                if (jwtAuthController == null)
-                    jwtAuthController = SpringUtils.getBean(JwtAuthController.class);
+                if (jwtAuthFeign == null)
+                    jwtAuthFeign = SpringUtils.getBean(JwtAuthFeign.class);
             }
         }
     }

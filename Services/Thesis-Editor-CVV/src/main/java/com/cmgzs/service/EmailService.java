@@ -1,7 +1,5 @@
 package com.cmgzs.service;
 
-import com.cmgzs.vo.VerifyCodeVo;
-
 /**
  * @author huangzhenyu
  * @date 2022/10/5

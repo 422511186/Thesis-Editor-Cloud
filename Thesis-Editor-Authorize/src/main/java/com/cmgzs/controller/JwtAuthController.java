@@ -1,7 +1,9 @@
 package com.cmgzs.controller;
 
 
+import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.auth.User;
+import com.cmgzs.domain.auth.params.LoginParams;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.JwtAuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
+@RequiredToken(value = false)
 public class JwtAuthController extends BaseController {
 
     @Resource
@@ -26,9 +29,9 @@ public class JwtAuthController extends BaseController {
      * @return 结果
      */
     @PostMapping(value = "/login")
-    public ApiResult login(@RequestBody User param) {
+    public ApiResult login(@RequestBody LoginParams param) {
         ApiResult ajax = ApiResult.success();
-        Object tokens = jwtAuthService.login(param.getUserName(), param.getPassWord());
+        Object tokens = jwtAuthService.login(param.getUuid(), param.getCode(), param.getUserName(), param.getPassWord());
         ajax.put("tokens", tokens);
         return ajax;
     }
@@ -40,7 +43,7 @@ public class JwtAuthController extends BaseController {
      * @param param
      * @return
      */
-    @PostMapping(value = "/register")
+//    @PostMapping(value = "/register")
     public ApiResult register(@RequestBody User param) {
         jwtAuthService.register(param);
         return success();
@@ -67,4 +70,5 @@ public class JwtAuthController extends BaseController {
         Object access_token = jwtAuthService.refreshToken(refresh_token);
         return ApiResult.success(access_token);
     }
+
 }

@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +18,7 @@ import reactor.core.publisher.Mono;
  * @date 2022/9/9
  */
 @Slf4j
-//@Component
+@Component
 public class TokenFilter implements GlobalFilter, Ordered {
 
     @Override
@@ -32,7 +31,10 @@ public class TokenFilter implements GlobalFilter, Ordered {
         // 获取请求参数
         ServerHttpRequest request = exchange.getRequest();
         String token = request.getHeaders().getFirst("token");
-        if (!request.getURI().getPath().startsWith("/authenticate/auth/")) {
+        /**
+         * 判断是否要进入认证服务或者验证码服务
+         */
+        if (!request.getURI().getPath().startsWith("/authenticate/auth/") && !request.getURI().getPath().startsWith("/CVV/")) {
             if (token == null || "".equals(token)) {
                 return ApiUtil.getResponseError(exchange, "token不能为空");
             }

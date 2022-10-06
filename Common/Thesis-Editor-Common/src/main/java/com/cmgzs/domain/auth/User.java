@@ -3,6 +3,8 @@ package com.cmgzs.domain.auth;
 import com.cmgzs.domain.base.BaseEntity;
 import lombok.Data;
 
+import java.util.List;
+
 
 /**
  * 用户实体类
@@ -22,7 +24,6 @@ public class User extends BaseEntity {
      */
     private String passWord;
 
-    private String NewPassWord;
     /**
      * 昵称
      */
@@ -44,9 +45,16 @@ public class User extends BaseEntity {
      */
     private String phoneNumber;
 
-
     /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
+    /**
+     * 角色
+     */
+    private List<String> roles;
+    /**
+     * 权限
+     */
+    private List<String> permissions;
 }

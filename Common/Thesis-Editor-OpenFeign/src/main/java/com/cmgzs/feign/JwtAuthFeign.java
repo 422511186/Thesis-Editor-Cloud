@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Component
 @FeignClient(value = serverConstants.thesis_editor_authorize, path = "auth")
-public interface JwtAuthController {
+public interface JwtAuthFeign {
 
     /**
      * 解析token所对应的用户信息

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cmgzs.mapper.UserMapper">
 
-    <resultMap id="userMap" type="User">
+    <resultMap id="userMap" type="com.cmgzs.domain.auth.User">
         <id property="id" column="id"/>
         <result property="userName" column="user_name"/>
         <result property="passWord" column="pass_word"/>
@@ -11,18 +11,42 @@
         <result property="email" column="email"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="status" column="status"/>
+        <collection property="roles" ofType="string">
+            <result column="role_name"/>
+        </collection>
+        <collection property="permissions" ofType="string" >
+            <result column="value"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="roleMap" type="com.cmgzs.domain.auth.Role">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <resultMap id="permissionMap" type="com.cmgzs.domain.auth.Permission">
+        <id property="permissionId" column="permission_id"/>
+        <result property="value" column="value"/>
     </resultMap>
 
     <select id="getUserByUserName" resultMap="userMap">
-        select id,
-               user_name,
-               pass_word,
-               nick_name,
-               sex,
-               email,
-               phone_number,
-               status
+        select user.id,
+               user.user_name,
+               user.pass_word,
+               user.nick_name,
+               user.sex,
+               user.email,
+               user.phone_number,
+               user.status,
+               r.role_id       as role_id,
+               r.role_name     as role_name,
+               p.permission_id as permission_id,
+               p.value         as value
         from user
+                 left join user_role ur on user.id = ur.user_id
+                 left join roles r on ur.role_id = r.role_id
+                 left join role_permissions rp on r.role_id = rp.role_id
+                 left join permissions p on rp.permission_id = p.permission_id
         where user_name = #{userName}
     </select>
 
@@ -36,4 +60,6 @@
         set pass_word = #{newPassWord}
         where user_name = #{userName}
     </update>
+
+
 </mapper>

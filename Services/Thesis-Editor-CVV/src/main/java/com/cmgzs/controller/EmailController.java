@@ -2,7 +2,7 @@ package com.cmgzs.controller;
 
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.EmailService;
-import com.cmgzs.vo.VerifyCodeVo;
+import com.cmgzs.domain.cvv.params.VerifyCodeParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +37,9 @@ public class EmailController {
      * 验证验证码是否正确
      */
     @GetMapping(value = "/verifyCode")
-    public ApiResult verifyCode(VerifyCodeVo verifyCodeVo) {
-        String uuid = verifyCodeVo.getUuid();
-        String code = verifyCodeVo.getCode();
+    public ApiResult verifyCode(VerifyCodeParams verifyCodeParams) {
+        String uuid = verifyCodeParams.getUuid();
+        String code = verifyCodeParams.getCode();
         if (uuid == null || code == null) return ApiResult.error("参数不合法");
         if ("".equals(uuid) || "".equals(code)) return ApiResult.error("参数不合法");
 

@@ -1,4 +1,4 @@
-package com.cmgzs.controller.params;
+package com.cmgzs.domain.auth.params;
 
 import lombok.Data;
 
@@ -10,6 +10,16 @@ import lombok.Data;
  */
 @Data
 public class LoginParams {
+
+    /**
+     * 验证码对应的uuid
+     */
+    private String uuid;
+
+    /**
+     * 验证码
+     */
+    private String code;
 
     /**
      * 用户名

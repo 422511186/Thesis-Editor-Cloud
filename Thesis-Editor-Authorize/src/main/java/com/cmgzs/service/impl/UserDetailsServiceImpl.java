@@ -1,8 +1,10 @@
 package com.cmgzs.service.impl;
 
 
+import com.cmgzs.constant.HttpStatus;
 import com.cmgzs.domain.MyUserDetails;
 import com.cmgzs.domain.auth.User;
+import com.cmgzs.exception.AuthException;
 import com.cmgzs.mapper.UserMapper;
 import com.cmgzs.service.PermissionsService;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +34,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在！");
+        }
+
+        if ("1".equals(user.getStatus())) {
+            throw new AuthException("该账户已经被锁定", HttpStatus.AUTH_LOCK);
         }
         return createLoginUser(user);
     }

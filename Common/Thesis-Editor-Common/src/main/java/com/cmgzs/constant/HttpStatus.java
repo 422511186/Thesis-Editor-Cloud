@@ -67,6 +67,11 @@ public class HttpStatus {
     public static final int BAD_METHOD = 405;
 
     /**
+     * 账户已经被锁定
+     */
+    public static final int AUTH_LOCK = 406;
+
+    /**
      * 资源冲突，或者资源被锁
      */
     public static final int CONFLICT = 409;
@@ -85,4 +90,5 @@ public class HttpStatus {
      * 接口未实现
      */
     public static final int NOT_IMPLEMENTED = 501;
+
 }

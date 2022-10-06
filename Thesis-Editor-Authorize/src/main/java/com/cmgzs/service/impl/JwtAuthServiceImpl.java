@@ -4,15 +4,18 @@ package com.cmgzs.service.impl;
 import com.cmgzs.constant.Constants;
 import com.cmgzs.domain.MyUserDetails;
 import com.cmgzs.domain.auth.User;
+import com.cmgzs.domain.base.ApiResult;
+import com.cmgzs.domain.cvv.params.VerifyCodeParams;
 import com.cmgzs.exception.AuthException;
 import com.cmgzs.exception.CustomException;
 import com.cmgzs.exception.UserNameExistedException;
+import com.cmgzs.feign.EmailFeign;
 import com.cmgzs.mapper.UserMapper;
 import com.cmgzs.service.JwtAuthService;
 import com.cmgzs.service.RedisService;
+import com.cmgzs.utils.ServletUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
 import com.cmgzs.utils.id.UUID;
-import com.cmgzs.utils.ServletUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,16 +43,29 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Resource
     private RedisService redisService;
+    @Resource
+    private EmailFeign emailFeign;
 
     /**
      * 登录
      *
+     * @param uuid     验证码uuid
+     * @param code     验证码
      * @param username 用户名
-     * @param password 用户密码
+     * @param password 密码
      * @return 返回token
      * @throws Exception
      */
-    public Object login(String username, String password) {
+    public Object login(String uuid, String code, String username, String password) {
+
+        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+        verifyCodeParams.setUuid(uuid);
+        verifyCodeParams.setCode(code);
+        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
+
+        if (!apiResult.get(ApiResult.CODE_TAG).equals(200)) {
+            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
+        }
 
         //使用用户名密码进行登录验证
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);

@@ -14,4 +14,6 @@ public class serverConstants {
     
     public final static String thesis_editor_gateway = "Thesis-Editor-Gateway";
 
+    public final static String thesis_editor_cvv = "Thesis-Editor-CVV";
+
 }
