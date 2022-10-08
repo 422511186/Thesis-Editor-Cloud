@@ -8,10 +8,10 @@ public interface EmailService {
     /**
      * 通过邮箱发送验证码
      *
-     * @param to
+     * @param receive
      * @return
      */
-    String sendEmail(String to);
+    void sendEmail(String receive);
 
     /**
      * 验证 验证码是否正确

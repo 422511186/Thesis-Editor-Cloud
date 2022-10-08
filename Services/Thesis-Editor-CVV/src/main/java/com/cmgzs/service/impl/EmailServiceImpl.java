@@ -5,7 +5,6 @@ import com.cmgzs.service.EmailService;
 import com.cmgzs.service.RedisService;
 import com.cmgzs.utils.EmailUtils;
 import com.cmgzs.utils.ValidateCodeUtils;
-import com.cmgzs.utils.id.SnowFlakeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,24 +27,18 @@ public class EmailServiceImpl implements EmailService {
     /**
      * 通过邮箱发送验证码
      *
-     * @param to
+     * @param receive
      * @return
      */
     @Override
-    public String sendEmail(String to) {
-        String uuid = SnowFlakeUtil.getSnowFlakeId().toString();
+    public void sendEmail(String receive) {
+        //生成邮箱验证码
         String code4String = ValidateCodeUtils.generateValidateCode4String(6);
-
-        log.info("收件人:{}, 验证码:{}, uuid:{}", to, code4String, uuid);
-
-        try {
-            emailUtils.sendMessage(to, "service", "验证码为: " + code4String + ",有效期为5分钟");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        redisService.setCacheObject(RedisConstant.EMAIL_PREFIX + to, code4String, 5, TimeUnit.MINUTES);
-        return uuid;
+        log.info("收件人:{}, 验证码:{}", receive, code4String);
+        //发送邮箱验证码
+        emailUtils.sendMessage(receive, "service", "验证码为: " + code4String + ",有效期为5分钟");
+        //设置缓存
+        redisService.setCacheObject(RedisConstant.EMAIL_PREFIX + receive, code4String, 5, TimeUnit.MINUTES);
     }
 
     /**

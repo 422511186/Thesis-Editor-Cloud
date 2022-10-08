@@ -16,10 +16,20 @@ import javax.annotation.Resource;
 public class EmailUtils {
     @Resource
     private JavaMailSender mailSender;
-    //邮件发件人
+
+    /**
+     * 邮件发件人
+     */
     @Value("${spring.mail.username}")
     private String from;
 
+    /**
+     * 发送邮件
+     *
+     * @param to      收件人
+     * @param subject 主题
+     * @param text    内容
+     */
     public void sendMessage(String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();

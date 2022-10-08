@@ -1,10 +1,13 @@
 package com.cmgzs.controller;
 
 import com.cmgzs.domain.base.ApiResult;
-import com.cmgzs.service.EmailService;
 import com.cmgzs.domain.cvv.params.VerifyCodeParams;
+import com.cmgzs.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -28,9 +31,8 @@ public class EmailController {
      */
     @GetMapping(value = "/sendEmail")
     public ApiResult getEmail(@RequestParam(value = "toEmail") String toEmail) {
-        String s = emailService.sendEmail(toEmail);
-        if (s == null) return ApiResult.error("发送邮箱失败");
-        return ApiResult.success("发送邮箱成功", s);
+        emailService.sendEmail(toEmail);
+        return ApiResult.success("发送邮箱成功");
     }
 
     /**
