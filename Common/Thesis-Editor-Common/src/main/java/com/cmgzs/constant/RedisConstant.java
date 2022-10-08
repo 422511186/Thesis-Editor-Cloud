@@ -15,7 +15,7 @@ public class RedisConstant {
     /**
      * email 验证码
      */
-    public final static String email_prefix = "email_prefix";
+    public final static String EMAIL_PREFIX = "email_prefix";
 
 
 }

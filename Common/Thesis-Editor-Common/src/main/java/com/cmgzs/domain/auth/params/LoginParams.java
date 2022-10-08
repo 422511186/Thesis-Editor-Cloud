@@ -35,4 +35,14 @@ public class LoginParams {
      * 修改密码 -- 新密码
      */
     private String NewPassWord;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    private String phoneNumber;
 }

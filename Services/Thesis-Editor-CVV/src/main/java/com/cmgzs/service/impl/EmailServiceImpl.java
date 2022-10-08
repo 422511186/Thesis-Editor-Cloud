@@ -39,13 +39,12 @@ public class EmailServiceImpl implements EmailService {
         log.info("收件人:{}, 验证码:{}, uuid:{}", to, code4String, uuid);
 
         try {
-            redisService.setCacheObject(RedisConstant.email_prefix + uuid, code4String, 5, TimeUnit.MINUTES);
             emailUtils.sendMessage(to, "service", "验证码为: " + code4String + ",有效期为5分钟");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        redisService.setCacheObject(RedisConstant.email_prefix + uuid, code4String, 5, TimeUnit.MINUTES);
+        redisService.setCacheObject(RedisConstant.EMAIL_PREFIX + to, code4String, 5, TimeUnit.MINUTES);
         return uuid;
     }
 
@@ -54,9 +53,9 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public int verifyCode(String uuid, String code) {
-        String cacheCode = redisService.getCacheObject(RedisConstant.email_prefix + uuid);
+        String cacheCode = redisService.getCacheObject(RedisConstant.EMAIL_PREFIX + uuid);
         if (cacheCode == null || !cacheCode.equals(code)) return 0;
-        redisService.deleteObject(RedisConstant.email_prefix + uuid);
+        redisService.deleteObject(RedisConstant.EMAIL_PREFIX + uuid);
         return 1;
     }
 }

@@ -1,7 +1,6 @@
 package com.cmgzs.controller;
 
 
-import com.cmgzs.domain.auth.User;
 import com.cmgzs.domain.auth.params.LoginParams;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.JwtAuthService;
@@ -21,6 +20,7 @@ public class JwtAuthController extends BaseController {
     private JwtAuthService jwtAuthService;
 
     /**
+     * 通过账号密码登录
      * 登录获取token凭证
      *
      * @param param 参数
@@ -36,13 +36,28 @@ public class JwtAuthController extends BaseController {
 
 
     /**
+     * 通过邮箱登录
+     * 登录获取token凭证
+     *
+     * @param param 参数
+     * @return 结果
+     */
+//    @PostMapping(value = "/login")
+    public ApiResult loginBy_email(@RequestBody LoginParams param) {
+        ApiResult ajax = ApiResult.success();
+        Object tokens = jwtAuthService.login(param.getUuid(), param.getCode(), param.getUserName(), param.getPassWord());
+        ajax.put("tokens", tokens);
+        return ajax;
+    }
+
+    /**
      * 注册接口
      *
      * @param param
      * @return
      */
-//    @PostMapping(value = "/register")
-    public ApiResult register(@RequestBody User param) {
+    @PostMapping(value = "/register")
+    public ApiResult register(@RequestBody LoginParams param) {
         jwtAuthService.register(param);
         return success();
     }

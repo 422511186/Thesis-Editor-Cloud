@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userMapper.getUserByUserName(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("用户名不存在！");
+            throw new UsernameNotFoundException("该账户不存在！");
         }
 
         if ("1".equals(user.getStatus())) {

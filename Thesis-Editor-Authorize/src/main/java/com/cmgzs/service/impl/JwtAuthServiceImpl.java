@@ -4,6 +4,7 @@ package com.cmgzs.service.impl;
 import com.cmgzs.constant.Constants;
 import com.cmgzs.domain.MyUserDetails;
 import com.cmgzs.domain.auth.User;
+import com.cmgzs.domain.auth.params.LoginParams;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.domain.cvv.params.VerifyCodeParams;
 import com.cmgzs.exception.AuthException;
@@ -58,14 +59,14 @@ public class JwtAuthServiceImpl implements JwtAuthService {
      */
     public Object login(String uuid, String code, String username, String password) {
 
-        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
-        verifyCodeParams.setUuid(uuid);
-        verifyCodeParams.setCode(code);
-        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
+//        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+//        verifyCodeParams.setUuid(uuid);
+//        verifyCodeParams.setCode(code);
+//        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
 
-        if (!apiResult.get(ApiResult.CODE_TAG).equals(200)) {
-            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
-        }
+//        if (!apiResult.get(ApiResult.CODE_TAG).equals(200)) {
+//            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
+//        }
 
         //使用用户名密码进行登录验证
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -74,7 +75,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
             //认证
             authentication = authenticationManager.authenticate(upToken);
         } catch (AuthenticationException e) {
-            throw new CustomException("账号或密码错误");
+            throw e;
         }
 
         MyUserDetails loginUser = (MyUserDetails) authentication.getPrincipal();
@@ -91,6 +92,19 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         return tokens;
     }
 
+    @Override
+    public Object loginBy_email(String email, String code) {
+        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+        verifyCodeParams.setUuid(email);
+        verifyCodeParams.setCode(email);
+        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
+
+        if (!apiResult.get(ApiResult.CODE_TAG).equals(200))
+            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
+
+        return null;
+    }
+
 
     /**
      * 注册功能
@@ -98,15 +112,26 @@ public class JwtAuthServiceImpl implements JwtAuthService {
      * @param param 用户信息参数
      */
     @Override
-    public void register(User param) {
+    public void register(LoginParams param) {
+
+        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+        verifyCodeParams.setUuid(param.getEmail());
+        verifyCodeParams.setCode(param.getCode());
+        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
+
+        if (!apiResult.get(ApiResult.CODE_TAG).equals(200))
+            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
+
         User userByUserName = userMapper.getUserByUserName(param.getUserName());
         //如果当前用户名已存在
-        if (userByUserName != null)
-            throw new UserNameExistedException();
+        if (userByUserName != null) throw new UserNameExistedException();
+
         String pwd = bCryptPasswordEncoder.encode(param.getPassWord());
-        param.setPassWord(pwd);
-        param.setId(SnowFlakeUtil.getSnowFlakeId().toString());
-        userMapper.insertUser(param);
+        User user = new User();
+        user.setPassWord(pwd);
+        user.setId(SnowFlakeUtil.getSnowFlakeId().toString());
+        user.setEmail(param.getEmail());
+        userMapper.insertUser(user);
     }
 
     /**
