@@ -2,6 +2,7 @@ package com.cmgzs.domain.auth;
 
 import com.cmgzs.domain.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 用户实体类
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -19,6 +21,7 @@ public class User extends BaseEntity {
      * 用户名
      */
     private String userName;
+
     /**
      * 密码
      */

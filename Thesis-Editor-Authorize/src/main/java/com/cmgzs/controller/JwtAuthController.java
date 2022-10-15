@@ -29,7 +29,7 @@ public class JwtAuthController extends BaseController {
     @PostMapping(value = "/login")
     public ApiResult login(@RequestBody LoginParams param) {
         ApiResult ajax = ApiResult.success();
-        Object tokens = jwtAuthService.login(param.getUuid(), param.getCode(), param.getUserName(), param.getPassWord());
+        Object tokens = jwtAuthService.login(param.getEmail(), param.getCode(), param.getUserName(), param.getPassWord());
         ajax.put("tokens", tokens);
         return ajax;
     }
@@ -45,8 +45,7 @@ public class JwtAuthController extends BaseController {
 //    @PostMapping(value = "/login")
     public ApiResult loginBy_email(@RequestBody LoginParams param) {
         ApiResult ajax = ApiResult.success();
-        Object tokens = jwtAuthService.login(param.getUuid(), param.getCode(), param.getUserName(), param.getPassWord());
-        ajax.put("tokens", tokens);
+
         return ajax;
     }
 

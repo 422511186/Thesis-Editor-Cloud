@@ -4,6 +4,7 @@ import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.domain.cvv.params.VerifyCodeParams;
 import com.cmgzs.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,8 @@ public class EmailController {
 
     @Resource
     private EmailService emailService;
+    @Resource
+    private AmqpTemplate amqpTemplate;
 
     /**
      * 发送邮件 验证码
@@ -31,7 +34,8 @@ public class EmailController {
      */
     @GetMapping(value = "/sendEmail")
     public ApiResult getEmail(@RequestParam(value = "toEmail") String toEmail) {
-        emailService.sendEmail(toEmail);
+        //通过mq发送验证码，异步提速
+        amqpTemplate.convertAndSend("emailExchange", "email", toEmail);
         return ApiResult.success("发送邮箱成功");
     }
 

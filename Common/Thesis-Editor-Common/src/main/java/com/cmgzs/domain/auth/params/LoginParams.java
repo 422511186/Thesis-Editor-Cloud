@@ -12,11 +12,6 @@ import lombok.Data;
 public class LoginParams {
 
     /**
-     * 验证码对应的uuid
-     */
-    private String uuid;
-
-    /**
      * 验证码
      */
     private String code;

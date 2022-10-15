@@ -23,8 +23,7 @@ class EmailServiceImplTest {
     @Test
     void sendEmail() {
         String toEmail = "422511186@qq.com";
-        String s = emailService.sendEmail(toEmail);
-        log.info("s:{}", s);
+        emailService.sendEmail(toEmail);
     }
 
     @Test

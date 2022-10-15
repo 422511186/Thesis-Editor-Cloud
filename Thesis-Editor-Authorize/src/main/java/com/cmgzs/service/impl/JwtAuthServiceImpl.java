@@ -17,6 +17,7 @@ import com.cmgzs.service.RedisService;
 import com.cmgzs.utils.ServletUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
 import com.cmgzs.utils.id.UUID;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,27 +47,29 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     private RedisService redisService;
     @Resource
     private EmailFeign emailFeign;
+    @Resource
+    private AmqpTemplate amqpTemplate;
 
     /**
      * 登录
      *
-     * @param uuid     验证码uuid
+     * @param email     验证码uuid
      * @param code     验证码
      * @param username 用户名
      * @param password 密码
      * @return 返回token
      * @throws Exception
      */
-    public Object login(String uuid, String code, String username, String password) {
+    public Object login(String email, String code, String username, String password) {
 
-//        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
-//        verifyCodeParams.setUuid(uuid);
-//        verifyCodeParams.setCode(code);
-//        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
+        VerifyCodeParams verifyCodeParams = new VerifyCodeParams();
+        verifyCodeParams.setUuid(email);
+        verifyCodeParams.setCode(code);
+        ApiResult apiResult = emailFeign.verifyCode(verifyCodeParams);
 
-//        if (!apiResult.get(ApiResult.CODE_TAG).equals(200)) {
-//            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
-//        }
+        if (!apiResult.get(ApiResult.CODE_TAG).equals(200)) {
+            throw new AuthException(apiResult.get(ApiResult.MSG_TAG).toString(), 500);
+        }
 
         //使用用户名密码进行登录验证
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -79,6 +82,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         }
 
         MyUserDetails loginUser = (MyUserDetails) authentication.getPrincipal();
+
         loginUser.getUser().setPassWord(null);
 
         String access_token = tokenService.createToken(loginUser);
@@ -124,12 +128,13 @@ public class JwtAuthServiceImpl implements JwtAuthService {
 
         User userByUserName = userMapper.getUserByUserName(param.getUserName());
         //如果当前用户名已存在
-        if (userByUserName != null) throw new UserNameExistedException();
+        if (userByUserName != null)
+            throw new UserNameExistedException();
 
         String pwd = bCryptPasswordEncoder.encode(param.getPassWord());
         User user = new User();
-        user.setPassWord(pwd);
         user.setId(SnowFlakeUtil.getSnowFlakeId().toString());
+        user.setPassWord(pwd);
         user.setEmail(param.getEmail());
         userMapper.insertUser(user);
     }
