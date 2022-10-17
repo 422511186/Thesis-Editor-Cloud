@@ -10,12 +10,12 @@
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="browse" jdbcType="BIGINT" property="browse"/>
         <result column="audit_status" jdbcType="INTEGER" property="auditStatus"/>
         <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
         <result column="pic" jdbcType="LONGVARCHAR" property="pic"/>
     </resultMap>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from topic
@@ -35,17 +35,22 @@
 
     <update id="updateByPrimaryKey" parameterType="com.cmgzs.domain.Topic">
         update topic
-        set user_id      = #{userId,jdbcType=VARCHAR},
-            type         = #{type,jdbcType=VARCHAR},
+        set type         = #{type,jdbcType=VARCHAR},
             cover_pic    = #{coverPic,jdbcType=VARCHAR},
             title        = #{title,jdbcType=VARCHAR},
-            create_time  = #{createTime,jdbcType=TIMESTAMP},
             update_time  = #{updateTime,jdbcType=TIMESTAMP},
             audit_status = #{auditStatus,jdbcType=INTEGER},
             is_delete    = #{isDelete,jdbcType=INTEGER},
             content      = #{content,jdbcType=LONGVARCHAR},
             pic          = #{pic,jdbcType=LONGVARCHAR}
         where topic_id = #{topicId,jdbcType=VARCHAR}
+          and user_id = #{userId,jdbcType=VARCHAR }
+    </update>
+
+    <update id="incrBrowse">
+        update topic
+        set topic.browse = topic.browse + 1
+        where topic_id = #{topicId}
     </update>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -56,6 +61,7 @@
                title,
                create_time,
                update_time,
+               browse,
                audit_status,
                is_delete,
                content,
@@ -66,17 +72,35 @@
 
     <select id="selectAll" resultMap="BaseResultMap">
         select topic_id,
-               user_id,
-               type,
-               cover_pic,
-               title,
-               create_time,
-               update_time,
-               audit_status,
-               is_delete,
-               content,
-               pic
+        user_id,
+        type,
+        cover_pic,
+        title,
+        create_time,
+        update_time,
+        browse,
+        audit_status,
+        is_delete,
+        pic
         from topic
+        <where>
+            <if test="userId != null and userId!=''">and user_id = #{userId}</if>
+            <if test="type != null and type != ''">and type = #{type}</if>
+            <if test="title != null and title!= ''">and title like concat(#{title},'%')</if>
+            <if test="auditStatus != null and auditStatus != ''">and audit_status = #{auditStatus}</if>
+        </where>
+    </select>
+
+    <select id="getBrowseByTopicId" resultType="java.lang.Long">
+        select browse
+        from topic
+        where topic_id = #{topicId}
+    </select>
+
+    <select id="selectUserIdByTopicId" resultMap="BaseResultMap">
+        select user_id
+        from topic
+        where topic_id = #{topicId}
     </select>
 
 </mapper>

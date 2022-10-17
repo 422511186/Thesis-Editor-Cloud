@@ -22,7 +22,7 @@ public class TableDataInfo implements Serializable
     private int code;
 
     /** 消息内容 */
-    private String msg;
+    private String message;
 
     /**
      * 表格数据对象
@@ -73,13 +73,13 @@ public class TableDataInfo implements Serializable
         this.code = code;
     }
 
-    public String getMsg()
+    public String getMessage()
     {
-        return msg;
+        return message;
     }
 
-    public void setMsg(String msg)
+    public void setMessage(String message)
     {
-        this.msg = msg;
+        this.message = message;
     }
 }

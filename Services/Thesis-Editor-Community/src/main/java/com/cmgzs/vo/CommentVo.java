@@ -1,17 +1,18 @@
-package com.cmgzs.domain;
+package com.cmgzs.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- *
  * @author huangzhenyu
  * @date 2022/10/16
  */
 @Data
-public class Comment implements Serializable {
+public class CommentVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -45,9 +46,10 @@ public class Comment implements Serializable {
     /**
      * 评论时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
     /**
-     * 是否删除
+     * 所有的二级评论
      */
-    private String isDelete;
+    private List<CommentVo> commentVOList;
 }

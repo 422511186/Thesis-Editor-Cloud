@@ -38,10 +38,10 @@ public class PageUtils extends PageHelper {
     /**
      * 响应请求分页数据
      */
-    protected TableDataInfo getDataTable(long total, List<?> list) {
+    public static TableDataInfo getDataTable(long total, List<?> list) {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
+        rspData.setMessage("查询成功");
         rspData.setRows(list);
         rspData.setTotal(total);
         return rspData;
@@ -50,10 +50,10 @@ public class PageUtils extends PageHelper {
     /**
      * 响应请求分页数据
      */
-    protected TableDataInfo getDataTable(List<?> list) {
+    public static TableDataInfo getDataTable(List<?> list) {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
+        rspData.setMessage("查询成功");
         rspData.setRows(list);
         rspData.setTotal(new PageInfo(list).getTotal());
         PageHelper.clearPage();

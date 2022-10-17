@@ -45,7 +45,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             }
             /** 如果required = true, 开始验证token，注入token对应的User信息 */
             checkedToken(httpServletRequest);
-        } else if (handlerMethod.getBeanType().isAnnotationPresent(RequiredToken.class)) {// 若方法上没有注解则判断该方法的类上是否有RequiredToken注解
+        } else if (handlerMethod.getBeanType().isAnnotationPresent(RequiredToken.class)) {
+            // 若方法上没有注解则判断该方法的类上是否有RequiredToken注解
             // 若类上有，则判断设置的是否false
             RequiredToken requiredToken = handlerMethod.getBeanType().getAnnotation(RequiredToken.class);
             // 若设置的required = false 则跳过验证
@@ -54,7 +55,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             }
             checkedToken(httpServletRequest);
         }
-
         return true;
     }
 

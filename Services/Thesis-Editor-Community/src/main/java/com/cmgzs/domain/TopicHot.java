@@ -10,11 +10,18 @@ import java.io.Serializable;
  */
 @Data
 public class TopicHot implements Serializable {
+
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 主键
+     */
     private String hotId;
-
+    /**
+     * 帖子id
+     */
     private String topicId;
-
+    /**
+     * 热度
+     */
     private Long hotNum;
 }
