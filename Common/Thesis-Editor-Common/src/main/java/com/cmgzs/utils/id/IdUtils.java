@@ -2,18 +2,16 @@ package com.cmgzs.utils.id;
 
 /**
  * ID生成器工具类
- * 
+ *
  * @author hzy
  */
-public class IdUtils
-{
+public class IdUtils {
     /**
      * 获取随机UUID
-     * 
+     *
      * @return 随机UUID
      */
-    public static String randomUUID()
-    {
+    public static String randomUUID() {
         return UUID.randomUUID().toString();
     }
 

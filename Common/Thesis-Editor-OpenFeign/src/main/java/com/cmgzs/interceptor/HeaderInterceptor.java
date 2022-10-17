@@ -4,6 +4,7 @@ import com.cmgzs.utils.text.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @date 2022/9/23
  */
 @Slf4j
+@Component
 public class HeaderInterceptor implements RequestInterceptor {
 
     @Override

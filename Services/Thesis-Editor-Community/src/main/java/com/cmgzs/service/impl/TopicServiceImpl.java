@@ -7,6 +7,7 @@ import com.cmgzs.mapper.TopicMapper;
 import com.cmgzs.service.TopicService;
 import com.cmgzs.utils.PageUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ public class TopicServiceImpl implements TopicService {
     private TopicMapper topicMapper;
     @Resource
     private ThreadPoolTaskExecutor executor;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取发布的帖子列表    包含热度

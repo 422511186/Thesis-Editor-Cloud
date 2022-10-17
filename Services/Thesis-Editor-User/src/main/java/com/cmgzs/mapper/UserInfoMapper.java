@@ -17,5 +17,5 @@ public interface UserInfoMapper {
      * @param user
      * @return
      */
-    int updateUserInfoByUserName(User user);
+    int updateUserInfoByUserId(User user);
 }

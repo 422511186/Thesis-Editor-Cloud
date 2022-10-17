@@ -1,5 +1,6 @@
 package com.cmgzs.controller;
 
+import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.auth.User;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.UserInfoService;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
  * @author huangzhenyu
  * @date 2022/10/15
  */
+@RequiredToken
 @RestController
 @RequestMapping("/userInfo")
 public class UserInfoController {
@@ -28,10 +30,6 @@ public class UserInfoController {
      */
     @RequestMapping(method = RequestMethod.PUT)
     public ApiResult updateUserInfo(@RequestBody User user) {
-
-        if (StringUtils.isNullOrEmpty(user.getUserName())) {
-            return ApiResult.error("用户名不能为空");
-        }
 
         int i = userInfoService.updateUserInfo(user);
         if (i == 0) {

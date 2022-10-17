@@ -1,5 +1,6 @@
 package com.cmgzs.service.impl;
 
+import com.cmgzs.domain.UserContext;
 import com.cmgzs.domain.auth.User;
 import com.cmgzs.mapper.UserInfoMapper;
 import com.cmgzs.service.UserInfoService;
@@ -30,6 +31,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public int updateUserInfo(User user) {
-        return userInfoMapper.updateUserInfoByUserName(user);
+        user.setId(UserContext.getUserId());
+        return userInfoMapper.updateUserInfoByUserId(user);
     }
 }

@@ -1,7 +1,9 @@
 package com.cmgzs.service.impl;
 
-import com.cmgzs.service.RedisService;
+import com.cmgzs.constant.RedisKeysConstant;
 import com.cmgzs.service.TopicHotService;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -9,9 +11,11 @@ import javax.annotation.Resource;
  * @author huangzhenyu
  * @date 2022/10/17
  */
+@Service
 public class TopicHotServiceImpl implements TopicHotService {
+
     @Resource
-    private RedisService redisService;
+    private RedisTemplate redisTemplate;
 
     /**
      * 增加某个帖子的热度    +1
@@ -25,7 +29,7 @@ public class TopicHotServiceImpl implements TopicHotService {
     }
 
     /**
-     * 删除行记录
+     * 删除记录
      *
      * @param TopicId
      * @return

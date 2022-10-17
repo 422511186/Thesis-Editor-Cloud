@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ApiResult CustomExceptionHandler(Exception e) {
         log.error("异常是:{}", e.getMessage());
+        e.printStackTrace();
         return ApiResult.error(e.getMessage());
     }
 
@@ -41,6 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthException.class)
     public ApiResult AuthExceptionHandler(AuthException e) {
         log.error("异常是:{}", e.getMessage());
+        e.printStackTrace();
         return ApiResult.error(e.getCode(), e.getMessage());
     }
 
@@ -50,6 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResult handler(MethodArgumentNotValidException e) {
         log.error("异常是:{}", e.getMessage());
+        e.printStackTrace();
         StringBuffer sb = new StringBuffer();
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
         allErrors.forEach(msg -> sb.append(msg.getDefaultMessage()).append(";"));
@@ -70,6 +73,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiResult handler(Exception e) {
         log.error("异常是:{}", e.getMessage());
+        e.printStackTrace();
         return ApiResult.error(e.getMessage());
     }
 }

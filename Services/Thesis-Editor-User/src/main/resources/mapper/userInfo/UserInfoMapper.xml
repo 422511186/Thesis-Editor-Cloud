@@ -12,14 +12,14 @@
         <result property="status" column="status"/>
     </resultMap>
 
-    <update id="updateUserInfoByUserName">
+    <update id="updateUserInfoByUserId">
         update user
         <set>
-            <if test="nickName != null and nickName !=''">nickName = #{nickName}</if>
-            <if test="sex != null and sex !=''">sex = #{sex}</if>
-            <if test="email != null and email !=''">email = #{email}</if>
-            <if test="phoneNumber != null and phoneNumber !=''">phone_number = #{phoneNumber}</if>
+            <if test="nickName != null and nickName !=''">nick_name = #{nickName},</if>
+            <if test="sex != null and sex !=''">sex = #{sex},</if>
+            <if test="email != null and email !=''">email = #{email},</if>
+            <if test="phoneNumber != null and phoneNumber !=''">phone_number = #{phoneNumber},</if>
         </set>
-        where user_name = #{userName}
+        where id = #{id}
     </update>
 </mapper>
