@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmgzs.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.cmgzs.domain.Comment">
+        <id column="comment_id" jdbcType="VARCHAR" property="commentId"/>
+        <result column="topic_id" jdbcType="VARCHAR" property="topicId"/>
+        <result column="user_pid" jdbcType="VARCHAR" property="userPid"/>
+        <result column="comment_pid" jdbcType="VARCHAR" property="commentPid"/>
+        <result column="reply_user_id" jdbcType="VARCHAR" property="replyUserId"/>
+        <result column="reply_comment_id" jdbcType="VARCHAR" property="replyCommentId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+    </resultMap>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from comment
+        <where>
+            <if test="commentId == null and commentId == ''">and comment_id = #{commentId}</if>
+            <if test="topicId == null and topicId == ''">and topic_id = #{topicId}</if>
+            <if test="userPid == null and userPid == ''">and user_pid = #{userPid}</if>
+            <if test="commentPid == null and commentPid == ''">and comment_pid = #{commentPid}</if>
+            <if test="replyUserId == null and replyUserId == ''">and reply_user_id = #{replyUserId}</if>
+            <if test="replyCommentId == null and replyCommentId == ''">and reply_comment_id = #{replyCommentId}</if>
+            <if test="isDelete == null and isDelete == ''">and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectByCommentId" resultMap="BaseResultMap">
+        select * from comment
+        <where>
+            <if test="commentId == null and commentId == ''">and comment_id = #{commentId}</if>
+            <if test="topicId == null and topicId == ''">and topic_id = #{topicId}</if>
+            <if test="userPid == null and userPid == ''">and user_pid = #{userPid}</if>
+            <if test="commentPid == null and commentPid == ''">and comment_pid = #{commentPid}</if>
+            <if test="replyUserId == null and replyUserId == ''">and reply_user_id = #{replyUserId}</if>
+            <if test="replyCommentId == null and replyCommentId == ''">and reply_comment_id = #{replyCommentId}</if>
+            <if test="isDelete == null and isDelete == ''">and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+
+    <insert id="insertComment">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId == null and commentId == ''">comment_id,</if>
+            <if test="topicId == null and topicId == ''">topic_id,</if>
+            <if test="userPid == null and userPid == ''">user_pid,</if>
+            <if test="commentPid == null and commentPid == ''">comment_pid,</if>
+            <if test="replyUserId == null and replyUserId == ''">reply_user_id,</if>
+            <if test="replyCommentId == null and replyCommentId == ''">reply_comment_id,</if>
+            <if test="content == null and content == ''">content,</if>
+            <if test="createTime == null and createTime == ''">create_time,</if>
+            <if test="isDelete == null and isDelete == ''">is_delete,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId == null and commentId == ''">#{commentId},</if>
+            <if test="topicId == null and topicId == ''">#{topicId},</if>
+            <if test="userPid == null and userPid == ''">#{userPid},</if>
+            <if test="commentPid == null and commentPid == ''">#{commentPid},</if>
+            <if test="replyUserId == null and replyUserId == ''">#{replyUserId},</if>
+            <if test="replyCommentId == null and replyCommentId == ''">#{replyCommentId},</if>
+            <if test="content == null and content == ''">#{content},</if>
+            <if test="createTime == null and createTime == ''">#{createTime},</if>
+            <if test="isDelete == null and isDelete == ''">#{isDelete},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertCommentBatch">
+        insert into comment
+        (
+        comment_id,
+        topic_id,
+        user_pid,
+        comment_pid,
+        reply_user_id,
+        reply_comment_id,
+        content,
+        create_time,
+        is_delete
+        )
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{item.commentId},
+            #{item.topicId},
+            #{item.userPid},
+            #{item.commentPid},
+            #{item.replyUserId},
+            #{item.replyCommentId},
+            #{item.content},
+            #{item.createTime},
+            #{item.isDelete},
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateComment">
+
+    </update>
+
+    <update id="updateCommentBatch">
+
+    </update>
+
+    <delete id="deleteComment">
+
+    </delete>
+
+    <delete id="deleteCommentBatch">
+
+    </delete>
+</mapper>

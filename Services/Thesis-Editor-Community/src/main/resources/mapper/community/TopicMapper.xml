@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmgzs.mapper.TopicMapper">
+
+    <resultMap id="BaseResultMap" type="com.cmgzs.domain.Topic">
+        <id column="topic_id" jdbcType="VARCHAR" property="topicId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="cover_pic" jdbcType="VARCHAR" property="coverPic"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="audit_status" jdbcType="INTEGER" property="auditStatus"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="pic" jdbcType="LONGVARCHAR" property="pic"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from topic
+        where topic_id = #{topicId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.cmgzs.domain.Topic">
+        insert into topic (topic_id, user_id, type,
+                           cover_pic, title, create_time,
+                           update_time, audit_status, is_delete,
+                           content, pic)
+        values (#{topicId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+                #{coverPic,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}, #{auditStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER},
+                #{content,jdbcType=LONGVARCHAR}, #{pic,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.cmgzs.domain.Topic">
+        update topic
+        set user_id      = #{userId,jdbcType=VARCHAR},
+            type         = #{type,jdbcType=VARCHAR},
+            cover_pic    = #{coverPic,jdbcType=VARCHAR},
+            title        = #{title,jdbcType=VARCHAR},
+            create_time  = #{createTime,jdbcType=TIMESTAMP},
+            update_time  = #{updateTime,jdbcType=TIMESTAMP},
+            audit_status = #{auditStatus,jdbcType=INTEGER},
+            is_delete    = #{isDelete,jdbcType=INTEGER},
+            content      = #{content,jdbcType=LONGVARCHAR},
+            pic          = #{pic,jdbcType=LONGVARCHAR}
+        where topic_id = #{topicId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select topic_id,
+               user_id,
+               type,
+               cover_pic,
+               title,
+               create_time,
+               update_time,
+               audit_status,
+               is_delete,
+               content,
+               pic
+        from topic
+        where topic_id = #{topicId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select topic_id,
+               user_id,
+               type,
+               cover_pic,
+               title,
+               create_time,
+               update_time,
+               audit_status,
+               is_delete,
+               content,
+               pic
+        from topic
+    </select>
+
+</mapper>

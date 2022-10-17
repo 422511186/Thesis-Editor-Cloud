@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmgzs.mapper.TopicHotMapper">
+    <resultMap id="BaseResultMap" type="com.cmgzs.domain.TopicHot">
+        <result column="hot_id" jdbcType="VARCHAR" property="hotId"/>
+        <result column="topic_id" jdbcType="VARCHAR" property="topicId"/>
+        <result column="hot_num" jdbcType="BIGINT" property="hotNum"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.cmgzs.domain.TopicHot">
+        insert into topic_hot (hot_id, topic_id, hot_num)
+        values (#{hotId,jdbcType=VARCHAR}, #{topicId,jdbcType=VARCHAR}, #{hotNum,jdbcType=BIGINT})
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select hot_id, topic_id, hot_num
+        from topic_hot
+    </select>
+</mapper>
