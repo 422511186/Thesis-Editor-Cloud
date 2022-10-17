@@ -3,7 +3,7 @@ package com.cmgzs.service.impl;
 import com.cmgzs.constant.LatexFileNameConstant;
 import com.cmgzs.domain.Archive;
 import com.cmgzs.domain.UserContext;
-import com.cmgzs.domain.base.PageResult;
+import com.cmgzs.domain.base.TableDataInfo;
 import com.cmgzs.exception.CustomException;
 import com.cmgzs.mapper.ArchiveMapper;
 import com.cmgzs.service.ArchiveService;
@@ -141,7 +141,7 @@ public class ArchiveServiceImpl implements ArchiveService {
          * 判断符合条件的行数
          */
         if (total < 1) {
-            return new PageResult<Archive>(pageNum, pageSize, total, new ArrayList<>());
+            return new TableDataInfo(new ArrayList<>(), total);
         }
 
         //分页查询
@@ -159,7 +159,7 @@ public class ArchiveServiceImpl implements ArchiveService {
         }
 
         List<Archive> archives = mongoTemplate.find(query, Archive.class);
-        return new PageResult<>(pageNum, pageSize, total, archives);
+        return new TableDataInfo(archives, total);
     }
 
     /**

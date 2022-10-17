@@ -1,21 +1,25 @@
 package com.cmgzs.utils;
 
+import com.cmgzs.constant.HttpStatus;
 import com.cmgzs.domain.PageDomain;
 import com.cmgzs.domain.TableSupport;
+import com.cmgzs.domain.base.TableDataInfo;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * 分页工具类
- * 
+ *
  * @author hzy
  */
-public class PageUtils extends PageHelper
-{
+public class PageUtils extends PageHelper {
+
     /**
      * 设置请求分页数据
      */
-    public static void startPage()
-    {
+    public static void startPage() {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
@@ -27,8 +31,33 @@ public class PageUtils extends PageHelper
     /**
      * 清理分页的线程变量
      */
-    public static void clearPage()
-    {
+    public static void clearPage() {
         PageHelper.clearPage();
     }
+
+    /**
+     * 响应请求分页数据
+     */
+    protected TableDataInfo getDataTable(long total, List<?> list) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(list);
+        rspData.setTotal(total);
+        return rspData;
+    }
+
+    /**
+     * 响应请求分页数据
+     */
+    protected TableDataInfo getDataTable(List<?> list) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(list);
+        rspData.setTotal(new PageInfo(list).getTotal());
+        PageHelper.clearPage();
+        return rspData;
+    }
+
 }

@@ -1,8 +1,11 @@
 package com.cmgzs.controller;
 
+import com.cmgzs.constant.HttpStatus;
 import com.cmgzs.domain.base.ApiResult;
+import com.cmgzs.domain.base.TableDataInfo;
 
 import java.util.Collection;
+import java.util.List;
 
 public class BaseController {
 
@@ -80,5 +83,19 @@ public class BaseController {
     public ApiResult warn() {
         return ApiResult.error("该接口正在开发中");
     }
+
+
+    /**
+     * 响应请求分页数据
+     */
+    protected TableDataInfo getDataTable(long total, List<?> list) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(list);
+        rspData.setTotal(total);
+        return rspData;
+    }
+
 
 }
