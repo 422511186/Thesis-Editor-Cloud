@@ -88,6 +88,7 @@
             <if test="type != null and type != ''">and type = #{type}</if>
             <if test="title != null and title!= ''">and title like concat(#{title},'%')</if>
             <if test="auditStatus != null and auditStatus != ''">and audit_status = #{auditStatus}</if>
+            <if test="isDelete != null and isDelete != ''">and is_delete = #{isDelete}</if>
         </where>
     </select>
 
