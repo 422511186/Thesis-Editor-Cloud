@@ -39,7 +39,7 @@ public class CommentFirstServiceImpl implements CommentFirstService {
     @Override
     public List<CommentVo> getList(String topicId) {
         PageUtils.startPage();
-        List<CommentFirst> commentFirsts = commentFirstMapper.selectAll();
+        List<CommentFirst> commentFirsts = commentFirstMapper.selectAll(topicId);
         List<CommentVo> commentVos = JSONObject.parseArray(JSON.toJSONString(commentFirsts), CommentVo.class);
 
         commentVos.forEach(e -> {

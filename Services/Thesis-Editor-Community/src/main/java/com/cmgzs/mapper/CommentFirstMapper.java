@@ -38,9 +38,10 @@ public interface CommentFirstMapper {
     /**
      * 查询列表
      *
+     * @param topicId 帖子Id
      * @return
      */
-    List<CommentFirst> selectAll();
+    List<CommentFirst> selectAll(String topicId);
 
     /**
      * 更新记录
