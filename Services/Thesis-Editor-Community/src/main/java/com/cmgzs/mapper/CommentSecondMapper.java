@@ -31,6 +31,14 @@ public interface CommentSecondMapper {
     int deleteByCommentPid(String commentPid);
 
     /**
+     * 通过主键删除记录行
+     *
+     * @param topicId 帖子Id
+     * @return 影响的行数
+     */
+    int deleteByTopicId(String topicId);
+
+    /**
      * 删除
      *
      * @param commentId 主键Id

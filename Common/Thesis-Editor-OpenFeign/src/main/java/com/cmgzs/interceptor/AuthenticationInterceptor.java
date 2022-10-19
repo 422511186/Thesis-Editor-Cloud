@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.UserContext;
 import com.cmgzs.domain.base.ApiResult;
-import com.cmgzs.exception.CustomException;
+import com.cmgzs.exception.AuthException;
 import com.cmgzs.feign.JwtAuthFeign;
 import com.cmgzs.utils.SpringUtils;
 import org.springframework.stereotype.Component;
@@ -72,7 +72,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
         //响应失败处理
         if (resJson.getIntValue("code") != 200) {
-            throw new CustomException(resJson.getString("message"));
+            throw new AuthException(resJson.getString("message"), resJson.getIntValue("code"));
         }
         JSONObject data = resJson.getJSONObject("data");
         UserContext.setUserName(data.getJSONObject("user").getString("userName"));

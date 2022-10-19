@@ -22,6 +22,12 @@
         from comment_second
         where comment_pid = #{commentPid}
     </delete>
+
+    <delete id="deleteByTopicId">
+        delete
+        from comment_second
+        where topic_id = #{topicId}
+    </delete>
     <insert id="insert" parameterType="com.cmgzs.domain.CommentSecond">
         insert into comment_second (comment_id, topic_id, user_id,
                                     comment_pid, reply_user_id, reply_comment_id,

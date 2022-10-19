@@ -14,6 +14,13 @@
         from comment_first
         where comment_id = #{commentId,jdbcType=VARCHAR}
     </delete>
+
+    <delete id="deleteByTopicId">
+        delete
+        from comment_first
+        where topic_id = #{topicId}
+    </delete>
+
     <insert id="insert" parameterType="com.cmgzs.domain.CommentFirst">
         insert into comment_first (comment_id, topic_id, user_id,
                                    create_time, is_delete, content)

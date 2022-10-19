@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Mapper
 public interface CommentFirstMapper {
+
     /**
      * 通过主键删除记录行
      *
@@ -18,6 +19,14 @@ public interface CommentFirstMapper {
      * @return 影响的行数
      */
     int deleteByPrimaryKey(String commentId);
+
+    /**
+     * 通过主键删除记录行
+     *
+     * @param topicId 帖子Id
+     * @return 影响的行数
+     */
+    int deleteByTopicId(String topicId);
 
     /**
      * 插入记录行
