@@ -8,10 +8,12 @@ import com.cmgzs.service.ContentService;
 import com.cmgzs.service.RedisService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +34,8 @@ public class ContentServiceImpl implements ContentService {
 
     @Resource
     private RedisService redisService;
+
+    private static final String RELEASE_LOCK_LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then   redis.call('expire', KEYS[1], ARGV[2]); return 1; else return 0 end";
 
     /**
      * 打开文档
@@ -62,16 +66,37 @@ public class ContentServiceImpl implements ContentService {
     public int keepOpen(String archiveId) {
 
         String userId = UserContext.getUserId();
+        String redis_key = archive_lock + archiveId;
 
-        String cacheUserId = redisService.getCacheObject(archive_lock + archiveId);
-
-        /**非当前用户占用文档*/
-        if (cacheUserId != null && !cacheUserId.equals(userId)) {
-            return 0;
+        /** 利用redis单线程模型，setnx的原子操作，尝试进行加锁操作 */
+        Boolean setIfAbsent = redisService.redisTemplate.opsForValue().setIfAbsent(redis_key, UserContext.getUserId(), 5, TimeUnit.MINUTES);
+        //无锁，则直接上锁
+        if (Boolean.TRUE.equals(setIfAbsent)) {
+            return 1;
         }
-        //续签
-        redisService.setCacheObject(archive_lock + archiveId, userId, 5, TimeUnit.MINUTES);
-        return 1;
+        /** 有锁，则需要判断当前持有锁对象是否为当前用户 */
+        // 指定 lua 脚本，并且指定返回值类型
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(RELEASE_LOCK_LUA_SCRIPT, Long.class);
+        /**
+         * 参数一:redisScript
+         * 参数二:key列表
+         * 参数三:arg（可多个）
+         */
+        Long result = (Long) redisService.redisTemplate.execute(redisScript, Collections.singletonList(redis_key), userId, 30 * 2 * 5);
+        if (result == null) {
+            throw new CustomException("异常错误");
+        }
+        return result.intValue();
+
+//        String cacheUserId = redisService.getCacheObject(redis_key);
+//
+//        /**非当前用户占用文档*/
+//        if (cacheUserId != null && !cacheUserId.equals(userId)) {
+//            return 0;
+//        }
+//        //续签
+//        redisService.setCacheObject(redis_key, userId, 5, TimeUnit.MINUTES);
+//        return 1;
     }
 
     /**

@@ -53,8 +53,8 @@ public class ArchiveController extends BaseController {
      * @param archiveId 项目id
      * @return 结果
      */
-    @DeleteMapping("/{archiveId}")
-    public ApiResult delete(@PathVariable String archiveId) {
+    @DeleteMapping()
+    public ApiResult delete(@RequestParam String archiveId) {
         return toResult(archiveService.deleteDocument(archiveId));
     }
 
