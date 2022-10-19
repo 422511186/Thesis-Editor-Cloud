@@ -1,6 +1,5 @@
 package com.cmgzs.service.impl;
 
-import com.cmgzs.constant.RedisKeysConstant;
 import com.cmgzs.service.TopicHotService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

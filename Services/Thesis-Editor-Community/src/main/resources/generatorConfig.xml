@@ -47,10 +47,8 @@
         <!-- 逆向分析的表 -->
         <!-- tableName设置为*号，可以对应所有表，此时不写domainObjectName -->
         <!-- domainObjectName属性指定生成出来的实体类的类名 -->
-        <table tableName="comment" domainObjectName="Comment"/>
-        <table tableName="topic" domainObjectName="Topic"/>
-        <table tableName="topic_hot" domainObjectName="TopicHot"/>
-
+        <table tableName="comment_first" domainObjectName="CommentFirst"/>
+        <table tableName="comment_second" domainObjectName="CommentSecond"/>
         <!-- 有些表的字段需要指定java类型
         <table schema="" tableName="">
             <columnOverride column="" javaType="" />

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmgzs.mapper.CommentSecondMapper">
+    <resultMap id="BaseResultMap" type="com.cmgzs.domain.CommentSecond">
+        <id column="comment_id" property="commentId" jdbcType="VARCHAR"/>
+        <result column="topic_id" property="topicId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="comment_pid" property="commentPid" jdbcType="VARCHAR"/>
+        <result column="reply_user_id" property="replyUserId" jdbcType="VARCHAR"/>
+        <result column="reply_comment_id" property="replyCommentId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from comment_second
+        where comment_id = #{commentId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByCommentPid">
+        delete
+        from comment_second
+        where comment_pid = #{commentPid}
+    </delete>
+    <insert id="insert" parameterType="com.cmgzs.domain.CommentSecond">
+        insert into comment_second (comment_id, topic_id, user_id,
+                                    comment_pid, reply_user_id, reply_comment_id,
+                                    create_time, is_delete, content)
+        values (#{commentId,jdbcType=VARCHAR}, #{topicId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+                #{commentPid,jdbcType=VARCHAR}, #{replyUserId,jdbcType=VARCHAR}, #{replyCommentId,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.cmgzs.domain.CommentSecond">
+        update comment_second
+        set topic_id         = #{topicId,jdbcType=VARCHAR},
+            user_id          = #{userId,jdbcType=VARCHAR},
+            comment_pid      = #{commentPid,jdbcType=VARCHAR},
+            reply_user_id    = #{replyUserId,jdbcType=VARCHAR},
+            reply_comment_id = #{replyCommentId,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            is_delete        = #{isDelete,jdbcType=INTEGER},
+            content          = #{content,jdbcType=LONGVARCHAR}
+        where comment_id = #{commentId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select comment_id,
+               topic_id,
+               user_id,
+               comment_pid,
+               reply_user_id,
+               reply_comment_id,
+               create_time,
+               is_delete,
+               content
+        from comment_second
+        where comment_id = #{commentId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select comment_id,
+               topic_id,
+               user_id,
+               comment_pid,
+               reply_user_id,
+               reply_comment_id,
+               create_time,
+               is_delete,
+               content
+        from comment_second
+        where comment_pid = #{commentPid}
+    </select>
+</mapper>

@@ -1,10 +1,15 @@
 package com.cmgzs.controller;
 
 import com.cmgzs.annotation.RequiredToken;
-import com.cmgzs.domain.base.ApiResult;
-import com.cmgzs.service.CommentService;
-import com.cmgzs.vo.CommentVo;
-import org.springframework.web.bind.annotation.*;
+import com.cmgzs.domain.base.TableDataInfo;
+import com.cmgzs.exception.CustomException;
+import com.cmgzs.service.CommentFirstService;
+import com.cmgzs.service.CommentSecondService;
+import com.cmgzs.utils.PageUtils;
+import com.cmgzs.utils.text.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -16,42 +21,24 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/community/comment")
 public class CommentController extends BaseController {
+    @Resource
+    private CommentFirstService commentFirstService;
 
     @Resource
-    private CommentService commentService;
+    private CommentSecondService commentSecondService;
 
     /**
-     * 查看帖子下的所有评论
+     * 获取评论列表
      *
-     * @param
-     * @return
+     * @param topicId 帖子Id
+     * @return 结果
      */
-    @RequestMapping(method = RequestMethod.GET)
-    public ApiResult getComments() {
-        return success();
+    public TableDataInfo getComments(@RequestParam String topicId) {
+        if (StringUtils.isEmpty(topicId)) {
+            throw new CustomException("topicId不能为空");
+        }
+        return PageUtils.getDataTable(commentFirstService.getList(topicId));
     }
 
-    /**
-     * 发布评论
-     *
-     * @param commentVo
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    public ApiResult publishComment(@RequestBody CommentVo commentVo) {
-
-        return success();
-    }
-
-    /**
-     * 删除评论
-     *
-     * @return
-     */
-    @RequestMapping(value = "/{commentId}", method = RequestMethod.DELETE)
-    public ApiResult deleteComment(@PathVariable String commentId) {
-
-        return success();
-    }
 
 }
