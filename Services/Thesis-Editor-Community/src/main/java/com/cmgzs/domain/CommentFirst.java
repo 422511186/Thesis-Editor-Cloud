@@ -1,5 +1,6 @@
 package com.cmgzs.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,13 +31,14 @@ public class CommentFirst implements Serializable {
     private String topicId;
 
     /**
-     * 评论内容
+         * 评论内容
      */
     private String content;
 
     /**
      * 评论时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime createTime;
 
     /**

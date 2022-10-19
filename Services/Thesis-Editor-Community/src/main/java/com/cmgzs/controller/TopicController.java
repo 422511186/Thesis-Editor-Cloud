@@ -16,9 +16,9 @@ import javax.annotation.Resource;
  * @author huangzhenyu
  * @date 2022/10/17
  */
+@RequiredToken
 @RestController
 @RequestMapping("/community/topic")
-@RequiredToken
 public class TopicController extends BaseController {
 
     @Resource
