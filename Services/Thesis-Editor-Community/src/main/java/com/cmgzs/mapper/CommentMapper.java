@@ -51,28 +51,14 @@ public interface CommentMapper {
      */
     int updateComment(Comment comment);
 
-    /**
-     * 批量修改
-     *
-     * @param list
-     * @return
-     */
-    int updateCommentBatch(List<Comment> list);
 
     /**
-     * 删除单挑记录
+     * 删除
      *
      * @param commentId
      * @return
      */
     int deleteComment(String commentId);
 
-    /**
-     * 批量删除
-     *
-     * @param commentIds
-     * @return
-     */
-    int deleteCommentBatch(List<String> commentIds);
 
 }

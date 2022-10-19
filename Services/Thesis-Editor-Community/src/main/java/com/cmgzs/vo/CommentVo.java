@@ -24,11 +24,11 @@ public class CommentVo implements Serializable {
      */
     private String topicId;
     /**
-     * 父评论的用户id
+     * 一级评论的用户id
      */
     private String userPid;
     /**
-     * 父评论的评论id
+     * 一级评论的评论id
      */
     private String commentPid;
     /**
