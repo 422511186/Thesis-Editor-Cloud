@@ -35,7 +35,7 @@ public class ContentServiceImpl implements ContentService {
     @Resource
     private RedisService redisService;
 
-    private static final String RELEASE_LOCK_LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then   redis.call('expire', KEYS[1], ARGV[2]); return 1; else return 0 end";
+    private static final String EXPIRE_LOCK_LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then   redis.call('expire', KEYS[1], ARGV[2]); return 1; else return 0 end";
 
     /**
      * 打开文档
@@ -76,7 +76,7 @@ public class ContentServiceImpl implements ContentService {
         }
         /** 有锁，则需要判断当前持有锁对象是否为当前用户 */
         // 指定 lua 脚本，并且指定返回值类型
-        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(RELEASE_LOCK_LUA_SCRIPT, Long.class);
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(EXPIRE_LOCK_LUA_SCRIPT, Long.class);
         /**
          * 参数一:redisScript
          * 参数二:key列表
