@@ -73,9 +73,7 @@ public class TopicServiceImpl implements TopicService {
         topicVos.forEach(e -> {
             e.setUserInfo(map.get(e.getUserId()));
             //查询浏览信息
-            log.info("redis key:{}", RedisKeysConstant.TOPIC_BROWSE + e.getTopicId());
             Object result = redisTemplate.opsForValue().get(RedisKeysConstant.TOPIC_BROWSE + e.getTopicId());
-            log.info("result:{}", result);
             long browse = result == null ? 0L : Long.parseLong(result.toString());
             e.setBrowse(browse);
         });
@@ -172,6 +170,7 @@ public class TopicServiceImpl implements TopicService {
             public void run() {
                 commentFirstMapper.deleteByTopicId(topicId);
                 commentSecondMapper.deleteByTopicId(topicId);
+                redisTemplate.opsForValue().get(RedisKeysConstant.TOPIC_BROWSE + topicId);
             }
         });
         return topicMapper.deleteByPrimaryKey(topicId);
