@@ -57,6 +57,6 @@ public interface TopicService {
      * @param topicId
      * @return
      */
-    int incrBrowse(String topicId);
+    long incrBrowse(String topicId);
 
 }

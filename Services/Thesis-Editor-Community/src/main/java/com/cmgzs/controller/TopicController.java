@@ -106,7 +106,7 @@ public class TopicController extends BaseController {
     @RequiredToken(value = false)   //不需要校验即可访问
     @RequestMapping(value = "/incrBrowse", method = RequestMethod.GET)
     public ApiResult incrBrowse(@RequestParam String topicId) {
-        int incrBrowse = topicService.incrBrowse(topicId);
+        long incrBrowse = topicService.incrBrowse(topicId);
         if (incrBrowse != 1) {
             return ApiResult.error();
         }

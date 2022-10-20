@@ -2,6 +2,7 @@ package com.cmgzs.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.cmgzs.constant.RedisKeysConstant;
 import com.cmgzs.domain.Topic;
 import com.cmgzs.domain.UserContext;
 import com.cmgzs.exception.CustomException;
@@ -71,6 +72,12 @@ public class TopicServiceImpl implements TopicService {
         Map map = data.toJavaObject(Map.class);
         topicVos.forEach(e -> {
             e.setUserInfo(map.get(e.getUserId()));
+            //查询浏览信息
+            log.info("redis key:{}", RedisKeysConstant.TOPIC_BROWSE + e.getTopicId());
+            Object result = redisTemplate.opsForValue().get(RedisKeysConstant.TOPIC_BROWSE + e.getTopicId());
+            log.info("result:{}", result);
+            long browse = result == null ? 0L : Long.parseLong(result.toString());
+            e.setBrowse(browse);
         });
 
         return topicVos;
@@ -85,11 +92,16 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public TopicVO getTopicDetail(String topicId) {
         Topic topic = topicMapper.selectByPrimaryKey(topicId);
+        if (topic == null) {
+            throw new CustomException("该帖子不存在");
+        }
         TopicVO topicVO = JSONObject.parseObject(JSON.toJSONString(topic), TopicVO.class);
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(userinfoFeign.getNickNames(new String[]{topicVO.getUserId()})));
         JSONObject data = resJson.getJSONObject("data");
         Map map = data.toJavaObject(Map.class);
         topicVO.setUserInfo(map.get(topicVO.getUserId()));
+        //添加一次浏览量
+        topicVO.setBrowse(incrBrowse(topicId));
         return topicVO;
     }
 
@@ -172,7 +184,11 @@ public class TopicServiceImpl implements TopicService {
      * @return
      */
     @Override
-    public int incrBrowse(String topicId) {
-        return topicMapper.incrBrowse(topicId);
+    public long incrBrowse(String topicId) {
+//        return topicMapper.incrBrowse(topicId);
+        String key = RedisKeysConstant.TOPIC_BROWSE + topicId;
+        redisTemplate.opsForValue().setIfAbsent(key, 0);
+        redisTemplate.opsForValue().increment(key);
+        return Long.parseLong(String.valueOf(redisTemplate.opsForValue().get(key)));
     }
 }
