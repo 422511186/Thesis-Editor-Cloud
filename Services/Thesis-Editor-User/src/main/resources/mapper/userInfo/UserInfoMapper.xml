@@ -22,4 +22,12 @@
         </set>
         where id = #{id}
     </update>
+    <select id="getNickNames" resultMap="userMap">
+        select id,user_name, nick_name
+        from user
+        where id in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

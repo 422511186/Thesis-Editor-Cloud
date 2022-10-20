@@ -7,6 +7,8 @@ import com.cmgzs.service.UserInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangzhenyu
@@ -33,5 +35,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     public int updateUserInfo(User user) {
         user.setId(UserContext.getUserId());
         return userInfoMapper.updateUserInfoByUserId(user);
+    }
+
+    @Override
+    public Map<String, User> getNickNames(String[] userIds) {
+        return userInfoMapper.getNickNames(userIds);
     }
 }

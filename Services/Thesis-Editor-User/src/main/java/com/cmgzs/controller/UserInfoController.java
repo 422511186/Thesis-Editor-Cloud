@@ -4,11 +4,7 @@ import com.cmgzs.annotation.RequiredToken;
 import com.cmgzs.domain.auth.User;
 import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.UserInfoService;
-import com.mysql.cj.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -16,7 +12,7 @@ import javax.annotation.Resource;
  * @author huangzhenyu
  * @date 2022/10/15
  */
-@RequiredToken
+
 @RestController
 @RequestMapping("/userInfo")
 public class UserInfoController {
@@ -28,6 +24,7 @@ public class UserInfoController {
      *
      * @param user
      */
+    @RequiredToken
     @RequestMapping(method = RequestMethod.PUT)
     public ApiResult updateUserInfo(@RequestBody User user) {
 
@@ -37,4 +34,17 @@ public class UserInfoController {
         }
         return ApiResult.success();
     }
+
+    /**
+     * 通过用户Id获取昵称
+     *
+     * @param userIds
+     * @return
+     */
+    @RequiredToken(value = false)
+    @RequestMapping(value = "/getNickNames", method = RequestMethod.GET)
+    public ApiResult getNickNames(@RequestParam String[] userIds) {
+        return ApiResult.success(userInfoService.getNickNames(userIds));
+    }
+
 }

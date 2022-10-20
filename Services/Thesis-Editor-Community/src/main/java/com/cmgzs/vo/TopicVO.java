@@ -15,6 +15,14 @@ public class TopicVO implements Serializable {
      */
     private String topicId;
     /**
+     * 发帖的用户id
+     */
+    private String userId;
+    /**
+     * 发帖的用户信息
+     */
+    private Object userInfo;
+    /**
      * 帖子分类
      */
     private String type;

@@ -3,6 +3,9 @@ package com.cmgzs.service;
 import com.cmgzs.domain.auth.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户信息模块
  *
@@ -20,4 +23,5 @@ public interface UserInfoService {
      */
     int updateUserInfo(User user);
 
+    Map<String, User> getNickNames(String[] userIds);
 }

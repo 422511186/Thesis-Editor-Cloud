@@ -1,16 +1,22 @@
 package com.cmgzs.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cmgzs.domain.CommentSecond;
 import com.cmgzs.domain.UserContext;
+import com.cmgzs.feign.UserinfoFeign;
 import com.cmgzs.mapper.CommentSecondMapper;
 import com.cmgzs.service.CommentSecondService;
 import com.cmgzs.utils.PageUtils;
 import com.cmgzs.utils.id.SnowFlakeUtil;
+import com.cmgzs.vo.CommentSecondVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangzhenyu
@@ -21,6 +27,8 @@ public class CommentSecondServiceImpl implements CommentSecondService {
 
     @Resource
     private CommentSecondMapper commentSecondMapper;
+    @Resource
+    private UserinfoFeign userinfoFeign;
 
     /**
      * 查询二级评论列表
@@ -29,9 +37,28 @@ public class CommentSecondServiceImpl implements CommentSecondService {
      * @return
      */
     @Override
-    public List<CommentSecond> getList(String commentPid) {
+    public List<CommentSecondVo> getList(String commentPid) {
         PageUtils.startPage();
-        return commentSecondMapper.selectAll(commentPid);
+        List<CommentSecond> commentSeconds = commentSecondMapper.selectAll(commentPid);
+        List<CommentSecondVo> commentSecondVos = JSONObject.parseArray(JSON.toJSONString(commentSeconds), CommentSecondVo.class);
+
+        HashSet<String> userIds = new HashSet<>();
+
+        commentSecondVos.forEach(e -> {
+            userIds.add(e.getUserId());
+            userIds.add(e.getReplyUserId());
+        });
+
+        String[] params = userIds.toArray(new String[0]);
+        JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(userinfoFeign.getNickNames(params)));
+        JSONObject data = resJson.getJSONObject("data");
+        Map map = data.toJavaObject(Map.class);
+
+        commentSecondVos.forEach(e -> {
+            e.setUserInfo(map.get(e.getUserId()));
+            e.setReplyUserInfo(map.get(e.getReplyUserId()));
+        });
+        return commentSecondVos;
     }
 
     /**

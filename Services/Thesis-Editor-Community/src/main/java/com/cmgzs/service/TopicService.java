@@ -1,6 +1,7 @@
 package com.cmgzs.service;
 
 import com.cmgzs.domain.Topic;
+import com.cmgzs.vo.TopicVO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface TopicService {
      * @param topicPo
      * @return
      */
-    List<Topic> getTopics(Topic topicPo);
+    List<TopicVO> getTopics(Topic topicPo);
 
     /**
      * 获取详情
@@ -24,7 +25,7 @@ public interface TopicService {
      * @param topicId
      * @return
      */
-    Topic getTopicDetail(String topicId);
+    TopicVO getTopicDetail(String topicId);
 
     /**
      * 发布帖子

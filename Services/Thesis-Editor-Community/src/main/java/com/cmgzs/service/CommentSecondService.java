@@ -1,6 +1,7 @@
 package com.cmgzs.service;
 
 import com.cmgzs.domain.CommentSecond;
+import com.cmgzs.vo.CommentSecondVo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface CommentSecondService {
      * @param commentPid 一级评论Id
      * @return
      */
-    List<CommentSecond> getList(String commentPid);
+    List<CommentSecondVo> getList(String commentPid);
 
     /**
      * 新增二级评论

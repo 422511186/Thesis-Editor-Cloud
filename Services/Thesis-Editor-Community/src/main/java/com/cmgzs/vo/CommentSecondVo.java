@@ -1,31 +1,30 @@
 package com.cmgzs.vo;
 
-import com.cmgzs.domain.CommentSecond;
 import com.cmgzs.domain.auth.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 评论Vo
+ * 二级评论
  *
  * @author huangzhenyu
- * @date 2022/10/16
+ * @date 2022/10/18
  */
 @Data
-public class CommentVo implements Serializable {
+public class CommentSecondVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 一级评论Id
+     * 二级评论Id
      */
     private String commentId;
+
     /**
-     * 发表当前评论的用户Id
+     * 发表当前评论的用户 Id
      */
     private String userId;
     /**
@@ -38,6 +37,25 @@ public class CommentVo implements Serializable {
     private String topicId;
 
     /**
+     * 一级评论的评论id
+     */
+    private String commentPid;
+
+    /**
+     * 被回复的用户id
+     */
+    private String replyUserId;
+    /**
+     * 被回复的用户信息
+     */
+    private Object replyUserInfo;
+
+    /**
+     * 被回复的评论id
+     */
+    private String replyCommentId;
+
+    /**
      * 评论内容
      */
     private String content;
@@ -47,9 +65,4 @@ public class CommentVo implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime createTime;
-
-    /**
-     * 所有的二级评论
-     */
-    private List<CommentSecondVo> commentSeconds;
 }
