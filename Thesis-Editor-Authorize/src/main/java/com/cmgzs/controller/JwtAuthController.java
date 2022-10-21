@@ -6,6 +6,7 @@ import com.cmgzs.domain.base.ApiResult;
 import com.cmgzs.service.JwtAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,7 +28,7 @@ public class JwtAuthController extends BaseController {
      * @return 结果
      */
     @PostMapping(value = "/login")
-    public ApiResult login(@RequestBody LoginParams param) {
+    public ApiResult login(@RequestBody @Validated LoginParams param) {
         ApiResult ajax = ApiResult.success();
         Object tokens = jwtAuthService.login(param.getEmail(), param.getCode(), param.getUserName(), param.getPassWord());
         ajax.put("tokens", tokens);
@@ -43,7 +44,7 @@ public class JwtAuthController extends BaseController {
      * @return 结果
      */
 //    @PostMapping(value = "/login")
-    public ApiResult loginBy_email(@RequestBody LoginParams param) {
+    public ApiResult loginBy_email(@RequestBody  LoginParams param) {
         ApiResult ajax = ApiResult.success();
 
         return ajax;
@@ -56,7 +57,7 @@ public class JwtAuthController extends BaseController {
      * @return
      */
     @PostMapping(value = "/register")
-    public ApiResult register(@RequestBody LoginParams param) {
+    public ApiResult register(@RequestBody @Validated LoginParams param) {
         jwtAuthService.register(param);
         return success();
     }

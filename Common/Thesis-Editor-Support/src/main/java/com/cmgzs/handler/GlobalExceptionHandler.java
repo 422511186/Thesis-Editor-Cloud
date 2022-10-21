@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Auther: hzy
@@ -24,7 +27,6 @@ import java.util.List;
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
-
 
     /**
      * 自定义异常
@@ -44,6 +46,20 @@ public class GlobalExceptionHandler {
         log.error("异常是:{}", e.getMessage());
         e.printStackTrace();
         return ApiResult.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 参数校验异常处理
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ApiResult handler(ConstraintViolationException e) {
+        StringBuffer errorMsg = new StringBuffer();
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        violations.forEach(x -> errorMsg.append(x.getMessage()).append(";"));
+        return new ApiResult(1500, errorMsg.toString(), null);
     }
 
     /**
