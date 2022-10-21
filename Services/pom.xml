@@ -16,6 +16,7 @@
         <module>Thesis-Editor-User</module>
         <module>Thesis-Editor-CVV</module>
         <module>Thesis-Editor-Community</module>
+        <module>Thesis-Editor-Inbox</module>
     </modules>
     <packaging>pom</packaging>
 </project>
