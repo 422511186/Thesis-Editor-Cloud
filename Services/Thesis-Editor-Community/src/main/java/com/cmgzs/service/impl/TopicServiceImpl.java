@@ -65,7 +65,9 @@ public class TopicServiceImpl implements TopicService {
         topicVos.forEach(e -> {
             userIds.add(e.getUserId());
         });
-
+        if (userIds.size() == 0) {
+            return topicVos;
+        }
         String[] params = userIds.toArray(new String[0]);
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(userinfoFeign.getNickNames(params)));
         JSONObject data = resJson.getJSONObject("data");

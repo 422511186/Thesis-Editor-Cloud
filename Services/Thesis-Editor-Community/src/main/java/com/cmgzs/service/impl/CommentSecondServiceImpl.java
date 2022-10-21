@@ -49,6 +49,10 @@ public class CommentSecondServiceImpl implements CommentSecondService {
             userIds.add(e.getReplyUserId());
         });
 
+        if (userIds.size() == 0) {
+            return commentSecondVos;
+        }
+
         String[] params = userIds.toArray(new String[0]);
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(userinfoFeign.getNickNames(params)));
         JSONObject data = resJson.getJSONObject("data");

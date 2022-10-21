@@ -135,6 +135,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         String pwd = bCryptPasswordEncoder.encode(param.getPassWord());
         User user = new User();
         user.setId(SnowFlakeUtil.getSnowFlakeId().toString());
+        user.setUserName(param.getUserName());
         user.setPassWord(pwd);
         user.setEmail(param.getEmail());
         userMapper.insertUser(user);

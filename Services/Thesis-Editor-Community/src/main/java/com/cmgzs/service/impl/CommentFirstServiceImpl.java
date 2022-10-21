@@ -64,6 +64,11 @@ public class CommentFirstServiceImpl implements CommentFirstService {
             List<CommentSecondVo> commentSecondVos = JSONObject.parseArray(JSON.toJSONString(commentSeconds), CommentSecondVo.class);
             e.setCommentSeconds(commentSecondVos);
         });
+
+        if (userIds.size() == 0) {
+            return commentVos;
+        }
+
         String[] params = userIds.toArray(new String[0]);
         JSONObject resJson = JSONObject.parseObject(JSONObject.toJSONString(userinfoFeign.getNickNames(params)));
         JSONObject data = resJson.getJSONObject("data");
