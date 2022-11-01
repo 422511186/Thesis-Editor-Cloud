@@ -76,6 +76,7 @@ public class JwtAuthController extends BaseController {
     /**
      * 使用refresh_token更换access_token
      *
+     * @param refresh_token
      * @return
      */
     @GetMapping(value = "/refreshToken")
